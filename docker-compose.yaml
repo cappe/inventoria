@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  local-db:
+    image: postgres:11.2
+    volumes:
+      - ./db/postgresql/local-data:/var/lib/postgresql/data
+
+  test-db:
+    image: postgres:11.2
+    volumes:
+      - ./db/postgresql/test-data:/var/lib/postgresql/data
+
+  api:
+    build: ./api
+    stdin_open: true # Keeps the stdin open (allows using e.g. byebug)
+    tty: true # Enables sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container
+    command: docker/entrypoint.sh
+    environment:
+      - RAILS_ENV=development
+      - RAILS_MASTER_KEY=e011d99b2e2daacadce5f7c385e8faf0
+      - RAILS_CONTEXT=local
+      - RAILS_DB_HOST=local-db
+    volumes:
+      - ./api:/usr/src
+      - ./db/postgresql/backups:/usr/src/db/backups
+    depends_on:
+      - local-db
+
+  frontend:
+    build: ./frontend
+    command: yarn dev
+    volumes:
+      - ./frontend:/usr/src
+      - /usr/src/node_modules
+    environment:
+      - VUE_APP_API_URL=localhost:3000
+    depends_on:
+      - api
+
+  nginx: 
+    image: nginx:alpine
+    volumes:
+      - ./nginx/certs:/etc/usr/nginx/certs
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:8443
+      - 3000:3443
+    depends_on:
+      - frontend
+      - api

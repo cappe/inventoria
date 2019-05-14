@@ -1,0 +1,20 @@
+# Misc
+.byebug_history
+.powenv
+.DS_Store
+.dockerignore
+.gitignore
+.git
+
+data
+db/backups
+config/master.key
+log/*
+tmp/*
+
+# Credentials
+.travis/*.key
+.travis/*.key.pub
+
+# Editor directories and files
+.idea
