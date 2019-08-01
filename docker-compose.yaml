@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   local-db:
@@ -28,7 +28,9 @@ services:
       - local-db
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: Builder
     command: yarn dev
     volumes:
       - ./frontend:/usr/src
