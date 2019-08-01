@@ -7,8 +7,10 @@ ARG BUNDLE_WITHOUT
 
 RUN apk add --update --no-cache \
     build-base \
-    postgresql-dev=11.3-r0 \
-    tzdata
+    postgresql-dev \
+    postgresql-client \
+    tzdata \
+    openssh-client
 
 WORKDIR /usr/src
 
@@ -34,8 +36,10 @@ FROM ruby:2.6.3-alpine
 # Add Alpine packages
 RUN apk add --update --no-cache \
     build-base \
-    postgresql-client=11.3-r0 \
-    tzdata
+    postgresql-dev \
+    postgresql-client \
+    tzdata \
+    openssh-client
 
 # Copy app with gems from former Builder stage
 COPY --from=Builder /usr/local/bundle/ /usr/local/bundle/
