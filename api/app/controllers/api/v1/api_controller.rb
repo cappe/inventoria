@@ -14,7 +14,7 @@ class Api::V1::ApiController < ApplicationController
     end
 
     def current_user
-      @current_user ||= authenticate
+      @current_user
     end
 
     def authenticate_token

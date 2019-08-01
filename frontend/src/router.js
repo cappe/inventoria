@@ -3,19 +3,29 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
+const meta = opts => Object.assign({}, {
+  requiresAuth: true,
+}, opts);
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'root',
       component: () => import(/* webpackChunkName: "baseLayout" */ './views/layouts/BaseLayout.vue'),
+      meta: meta({
+        requiresAuth: false,
+      }),
       children: [
         {
-          path: 'kirjaudu',
-          name: 'login',
+          path: '/',
+          alias: 'kirjaudu',
+          name: 'root',
           component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+          meta: meta({
+            requiresAuth: false,
+          }),
         },
       ],
     },
@@ -23,6 +33,7 @@ export default new Router({
       path: '/',
       name: 'bottomNavigationLayout',
       component: () => import(/* webpackChunkName: "bottomNavigationLayout" */ './views/layouts/BottomNavigationLayout.vue'),
+      meta: meta(),
       children: [
         {
           path: 'lukija',

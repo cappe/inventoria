@@ -1,18 +1,26 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import camelCase from 'lodash/camelCase';
 
 Vue.use(Vuex);
 
 const modules = {};
-
-/* ============ Get all manager modules ============ */
-const requireModule = require.context('./modules', false, /\.js$/);
+const requireModule = require.context('./modules', true, /\.js$/);
 
 requireModule.keys().forEach((fileName) => {
-  const moduleName = camelCase(fileName.replace(/(\.\/|\.js)/g, ''));
+  const a = fileName.split('/');
 
-  modules[moduleName] = {
+  let module = a.pop().replace(/(\.\/|\.js)/g, '');
+
+  // Handles nested modules
+  if (a.length > 1) {
+    a.shift(); // Drops the first el which is the "."
+
+    const path = a.join('/');
+
+    module = `${path}/${module}`;
+  }
+
+  modules[module] = {
     namespaced: true,
     ...requireModule(fileName).default,
   };

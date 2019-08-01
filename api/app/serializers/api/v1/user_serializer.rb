@@ -1,3 +1,5 @@
 class Api::V1::UserSerializer < ApplicationSerializer
-  attributes :id
+  attributes :id,
+             :email,
+             :access_token
 end

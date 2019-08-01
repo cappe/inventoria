@@ -1,7 +1,6 @@
-// import { getAccessToken } from './index';
-// import store from '../vuex';
+import { getAccessToken } from './index';
 
-// const BASE_URL = `https://${process.env.VUE_APP_API_URL}/api/v2`;
+const BASE_URL = `https://${process.env.VUE_APP_API_URL}/api/v1`;
 
 const getHeaders = (args = {}) => {
   const defaults = {
@@ -37,6 +36,7 @@ export default {
 
     return fetch(`${BASE_URL}/${url}`, options).then(parseResponse);
   },
+
   post(url, data) {
     const options = {
       method: 'POST',
@@ -48,6 +48,7 @@ export default {
 
     return fetch(`${BASE_URL}/${url}`, options).then(parseResponse);
   },
+
   update(url, data) {
     const options = {
       method: 'PATCH',
@@ -59,6 +60,7 @@ export default {
 
     return fetch(`${BASE_URL}/${url}`, options).then(parseResponse);
   },
+
   delete(url) {
     const options = {
       method: 'DELETE',

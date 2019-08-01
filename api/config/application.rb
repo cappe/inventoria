@@ -31,5 +31,24 @@ module Dentsply
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # User-added
+    config.time_zone = 'Europe/Helsinki'
+    config.i18n.default_locale = :fi
+
+    # CORS
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins {
+          "https://#{Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :access_control_allow_origin)}"
+        }
+        resource '*',
+                 headers: :any,
+                 methods: [:get, :post, :put, :patch, :delete, :options],
+                 expose: %w(Access-Control-Expose-Headers Content-Disposition)
+      end
+    end
+
+    config.require_master_key = true
   end
 end

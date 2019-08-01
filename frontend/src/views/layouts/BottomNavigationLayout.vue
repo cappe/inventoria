@@ -45,46 +45,54 @@
         </v-icon>
       </v-btn>
     </v-bottom-nav>
+
+    <snackbar />
+
   </v-app>
 </template>
 
 <script>
-export default {
-  name: 'App',
-  data: () => ({
-    currentNavIndex: 0,
-    navItems: [
-      {
-        label: 'Lukija',
-        to: '/lukija',
-        color: 'teal',
-        icon: 'camera',
-      },
-      {
-        label: 'Varasto',
-        to: '/varasto',
-        color: 'teal',
-        icon: 'business',
-      },
-      {
-        label: 'Tilaukset',
-        to: '/tilaukset',
-        color: 'teal',
-        icon: 'history',
-      },
-      {
-        label: 'Käyttäjä',
-        to: '/kayttaja',
-        color: 'teal',
-        icon: 'face',
-      },
-    ],
-  }),
+  import Snackbar from '@/components/Snackbar';
 
-  mounted() {
-    const navIndex = this.navItems.findIndex(i => i.to === this.$route.path);
+  export default {
+    components: {
+      Snackbar,
+    },
 
-    if (navIndex > -1) this.currentNavIndex = navIndex;
-  },
-};
+    data: () => ({
+      currentNavIndex: 0,
+      navItems: [
+        {
+          label: 'Lukija',
+          to: '/lukija',
+          color: 'teal',
+          icon: 'camera',
+        },
+        {
+          label: 'Varasto',
+          to: '/varasto',
+          color: 'teal',
+          icon: 'business',
+        },
+        {
+          label: 'Tilaukset',
+          to: '/tilaukset',
+          color: 'teal',
+          icon: 'history',
+        },
+        {
+          label: 'Käyttäjä',
+          to: '/kayttaja',
+          color: 'teal',
+          icon: 'face',
+        },
+      ],
+    }),
+
+    mounted() {
+      const navIndex = this.navItems.findIndex(i => i.to === this.$route.path);
+
+      if (navIndex > -1) this.currentNavIndex = navIndex;
+    },
+  };
 </script>
