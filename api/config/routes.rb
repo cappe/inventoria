@@ -4,6 +4,10 @@ Rails.application.routes.draw do
       get '/auth', to: 'sessions#show'
       post '/login', to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
+
+      scope module: :inventories, path: 'inventories' do
+        post 'place_product', to: 'place_product', as: :place_product_to_inventory
+      end
     end
   end
 end

@@ -64,6 +64,10 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.1)
+    interactor-rails (2.2.0)
+      interactor (~> 3.0)
+      rails (>= 4.2, < 5.3)
     jsonapi-renderer (0.2.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -153,6 +157,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   colorize
+  interactor-rails (~> 2.0)
   listen (>= 3.0.5, < 3.2)
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)

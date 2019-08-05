@@ -1,6 +1,17 @@
 ---
 fi:
+  inventory:
+    article_not_found: Artikkelia ei löytynyt
+    add_to_inventory_failed: Tuotteen lisääminen varastoon epäonnistui
+
   activerecord:
+    attributes:
+      product:
+        article: Tuote
+        gtin: GTIN
+        lot: LOT
+        manufacture_date: Valmistuspäivämäärä
+        expiry_date: Erääntymispäivä
     errors:
       messages:
         record_invalid: 'Validointi epäonnistui: %{errors}'
@@ -110,7 +121,7 @@ fi:
     format: "%{attribute} %{message}"
     messages:
       accepted: täytyy olla hyväksytty
-      blank: ei voi olla sisällötön
+      blank: ei voi olla tyhjä
       confirmation: ei vastaa varmennusta
       empty: ei voi olla tyhjä
       equal_to: täytyy olla yhtä suuri kuin %{count}
@@ -126,7 +137,7 @@ fi:
       not_a_number: ei ole luku
       not_an_integer: ei ole kokonaisluku
       odd: täytyy olla pariton
-      present: täytyy olla sisällötön
+      present: täytyy olla tyhjä
       required: täytyy olla
       taken: on jo käytössä
       too_long:
