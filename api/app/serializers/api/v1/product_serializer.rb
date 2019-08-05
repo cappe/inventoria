@@ -8,4 +8,15 @@ class Api::V1::ProductSerializer < ApplicationSerializer
              :used_at
 
   attribute :article, if: -> { should_include?(:article) }
+
+  def article
+    options = {
+      adapter: ActiveModelSerializers::Adapter::Attributes,
+      serializer: Api::V1::ArticleSerializer
+    }
+
+    ActiveModelSerializers::SerializableResource
+      .new(object.article, options)
+      .as_json
+  end
 end
