@@ -3,12 +3,11 @@ module Errors
     extend ActiveSupport::Concern
 
     included do
-      rescue_from Exception do |e|
-        Rails.logger.debug "e: #{e}".red
+      rescue_from Exception do
         respond(I18n.t('api.errors.general'), :internal_server_error)
       end
 
-      rescue_from ActiveRecord::RecordNotFound do |e|
+      rescue_from ActiveRecord::RecordNotFound do
         respond(I18n.t('api.errors.not_found'), :not_found)
       end
 
