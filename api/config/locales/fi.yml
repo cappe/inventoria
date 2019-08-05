@@ -4,6 +4,12 @@ fi:
     article_not_found: Artikkelia ei löytynyt
     add_to_inventory_failed: Tuotteen lisääminen varastoon epäonnistui
 
+  api:
+    errors:
+      general: Jotakin meni vikaan
+      not_found: Jotakin ei löytynyt
+      invalid_include_attributes: Kysely sisältää ei-sallittuja attribuutteja
+
   activerecord:
     attributes:
       product:

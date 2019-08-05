@@ -1,5 +1,6 @@
 class Api::V1::ApiController < ApplicationController
   include ActionController::HttpAuthentication::Token::ControllerMethods
+  include Errors::ErrorHandler
 
   # Add a before_action to authenticate all requests.
   # Move this to subclassed controllers if you only
@@ -7,6 +8,10 @@ class Api::V1::ApiController < ApplicationController
   before_action :authenticate
 
   protected
+
+    def current_inventory
+      @current_inventory ||= current_user.inventory
+    end
 
     # Authenticate the user with token based authentication
     def authenticate
