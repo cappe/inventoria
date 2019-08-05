@@ -17,6 +17,7 @@
           <v-text-field
             v-model="user.email"
             label="Sähköpostiosoite"
+            type="email"
           />
 
           <v-text-field

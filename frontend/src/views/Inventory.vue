@@ -11,20 +11,16 @@
       >
         <template slot="header">
           <div>
-            {{ product.label }}
+            {{ product.article.name }}
           </div>
         </template>
         <v-card>
-          <v-card-text>
-            <p>
-              Kenttä 1
-            </p>
-            <p>
-              Kenttä 2
-            </p>
-            <p>
-              Kenttä 3
-            </p>
+          <v-card-text
+            class="pl-4"
+          >
+            <product-details
+              :product="product"
+            />
           </v-card-text>
         </v-card>
       </v-expansion-panel-content>
@@ -35,8 +31,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import { mapWaitingActions } from 'vue-wait';
+import ProductDetails from '../components/ProductDetails';
 
 export default {
+  components: {
+    ProductDetails,
+  },
+
   computed: {
     ...mapGetters({
       products: 'inventory/products',
@@ -44,7 +45,9 @@ export default {
   },
 
   async mounted() {
-    this.loadProducts();
+    this.loadProducts({
+      include: ['article'],
+    });
   },
 
   methods: {

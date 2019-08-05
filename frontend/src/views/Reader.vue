@@ -4,10 +4,16 @@
       Reader
     </h1>
 
+    <v-btn
+      @click="create"
+    >
+      Create product
+    </v-btn>
+
     <video
       id="video"
-      width="300"
-      height="200"
+      width="100%"
+      height="100%"
       style="border: 1px solid gray"
     />
   </v-container>
@@ -17,33 +23,64 @@
 import {
   BrowserDatamatrixCodeReader,
 } from '@zxing/library';
+import { mapActions } from 'vuex';
 
 export default {
   data: () => ({
-    codeReader: null,
+    codeReader: new BrowserDatamatrixCodeReader(),
   }),
 
   mounted() {
-    this.codeReader = new BrowserDatamatrixCodeReader();
-
-    this.watchDatamatrices();
+    // this.readBarcode();
   },
 
   methods: {
-    async watchDatamatrices() {
+    ...mapActions({
+      placeProduct: 'inventory/placeProduct',
+    }),
+
+    async readBarcode() {
       try {
-        const videoInputDevices = await this.codeReader.getVideoInputDevices();
+        const deviceId = await this.getDeviceId();
 
-        const firstDeviceId = videoInputDevices[1].deviceId;
+        const {
+          text: barcode,
+        } = await this.readFromCamera(deviceId);
 
-        const result = await this.codeReader.decodeFromInputVideoDevice(firstDeviceId, 'video');
+        await this.placeProduct({
+          barcode,
+        });
 
-        alert(result); // eslint-disable-line
-
-        this.watchDatamatrices();
+        this.readBarcode();
       } catch (e) {
         console.error(e);
       }
+    },
+
+    async getDeviceId() {
+      const videoInputDevices = await this.codeReader.getVideoInputDevices();
+
+      if (videoInputDevices.length <= 0) {
+        return null;
+      }
+
+      if (videoInputDevices.length === 1) {
+        return videoInputDevices[0].deviceId; // The only available camera
+      }
+
+      return videoInputDevices[1].deviceId; // Rear camera
+    },
+
+    async readFromCamera(deviceId) {
+      const result = await this.codeReader.decodeFromInputVideoDevice(deviceId, 'video');
+
+      return result;
+    },
+
+    create() {
+      this.placeProduct({
+        barcode: '0107392532132612111606161721061610189264',
+      });
     },
   },
 };

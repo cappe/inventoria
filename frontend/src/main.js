@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import './plugins/vuetify';
+import './plugins/dayjs';
 import VueWait from 'vue-wait';
 import App from './App';
 import router from './router';

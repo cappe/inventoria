@@ -2751,6 +2751,11 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+dayjs@^1.5.24:
+  version "1.8.15"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.15.tgz#7121bc04e6a7f2621ed6db566be4a8aaf8c3913e"
+  integrity sha512-HYHCI1nohG52B45vCQg8Re3hNDZbMroWPkhz50yaX7Lu0ATyjGsTdoYZBpjED9ar6chqTx2dmSmM8A51mojnAg==
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -4198,6 +4203,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
 growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
+
+gs1js@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/gs1js/-/gs1js-0.0.2.tgz#89ed1273da3eddaf537162b9173b2a295c501b43"
+  integrity sha1-ie0Sc9o+3a9TcWK5FzsqKVxQG0M=
 
 gzip-size@^5.0.0:
   version "5.1.0"
@@ -9014,6 +9024,13 @@ vm-browserify@0.0.4:
 vue-cli-plugin-vuetify@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-0.5.0.tgz#14c9a61884da58cf6aaf8ff3309044931907f184"
+
+vue-dayjs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vue-dayjs/-/vue-dayjs-1.0.2.tgz#0fb3fc072d0ec8edf0f2bc0ba51a0b3a03a8dc45"
+  integrity sha512-rYvbpjZ6ZZ2MyQPpyltQmPBqd4+2RRfcFZb5/Fa6VsmBCmeSXTl6RHrHSOY72y5NJOrrxTpBg6VnP556gNSU7w==
+  dependencies:
+    dayjs "^1.5.24"
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
