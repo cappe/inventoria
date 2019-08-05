@@ -16,6 +16,8 @@ module.exports = {
       vue: 'never',
     }],
     indent: 'off',
+    'lines-between-class-members': 'off',
+    'no-empty': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',
