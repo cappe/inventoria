@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  audited
+
   belongs_to :article
   belongs_to :inventory
 
