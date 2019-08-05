@@ -6,4 +6,6 @@ class Api::V1::ProductSerializer < ApplicationSerializer
              :expiry_date,
              :used,
              :used_at
+
+  attribute :article, if: -> { should_include?(:article) }
 end

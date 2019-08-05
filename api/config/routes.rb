@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       scope module: :inventories, path: 'inventories' do
         post 'place_product', to: 'place_product', as: :place_product_to_inventory
       end
+
+      resources :products, only: [:index]
     end
   end
 end
