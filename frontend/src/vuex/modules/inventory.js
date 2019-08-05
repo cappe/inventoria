@@ -31,14 +31,14 @@ const actions = {
     } catch (e) {}
   },
 
-  async placeProduct({ commit, dispatch }, { barcode }) {
+  async placeProduct({ dispatch }, { barcode }) {
     try {
       const product = Gs1Parser.createProductFromBarode(barcode);
       const params = {
         product: product.toString(),
       };
 
-      const r = await api.post('/inventories/place_product', params);
+      const r = await api.post('/inventories/place_product?include=article', params);
 
       const successParams = {
         msg: `Tuote ${r.data.article.name} lisätty onnistuneesti`,
