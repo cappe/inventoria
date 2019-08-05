@@ -16,8 +16,8 @@ fi:
         article: Tuote
         gtin: GTIN
         lot: LOT
-        manufacture_date: Valmistuspäivämäärä
-        expiry_date: Erääntymispäivä
+        manufacture_date: Valmistuspäivä
+        expiry_date: Viimeinen käyttöpäivä
     errors:
       messages:
         record_invalid: 'Validointi epäonnistui: %{errors}'

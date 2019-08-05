@@ -11,4 +11,6 @@ class Product < ApplicationRecord
             :expiry_date,
             presence: true
 
+  scope :not_used, -> { where(used: false) }
+  scope :used, -> { where(used: true) }
 end
