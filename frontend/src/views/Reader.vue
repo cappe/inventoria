@@ -10,6 +10,12 @@
       Create product
     </v-btn>
 
+    <v-btn
+      @click="update"
+    >
+      Use product
+    </v-btn>
+
     <video
       id="video"
       width="100%"
@@ -37,6 +43,7 @@ export default {
   methods: {
     ...mapActions({
       placeProduct: 'inventory/placeProduct',
+      useProduct: 'inventory/useProduct',
     }),
 
     async readBarcode() {
@@ -79,6 +86,12 @@ export default {
 
     create() {
       this.placeProduct({
+        barcode: '0107392532132612111606161721061610189264',
+      });
+    },
+
+    update() {
+      this.useProduct({
         barcode: '0107392532132612111606161721061610189264',
       });
     },

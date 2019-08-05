@@ -3,6 +3,7 @@ fi:
   inventory:
     article_not_found: Artikkelia ei löytynyt
     add_to_inventory_failed: Tuotteen lisääminen varastoon epäonnistui
+    using_product_failed: Tuotetta ei voitu merkata käytetyksi
 
   api:
     errors:
@@ -10,13 +11,20 @@ fi:
       not_found: Jotakin ei löytynyt
       invalid_include_attributes: Kysely sisältää ei-sallittuja attribuutteja
 
+  audits:
+    product_audit:
+      create: Tuote luettu varastoon
+      used_from_inventory: Tuote käytetty
+      destroy: Tuote poistettu
+      no_comment: Ei kommenttia
+
   activerecord:
     attributes:
       product:
         article: Tuote
         gtin: GTIN
         lot: LOT
-        manufacture_date: Valmistuspäivä
+        manufacture_date: Valmistettu
         expiry_date: Viimeinen käyttöpäivä
     errors:
       messages:

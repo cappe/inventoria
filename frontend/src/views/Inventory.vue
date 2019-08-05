@@ -4,7 +4,16 @@
       Varasto
     </h1>
 
-    <v-expansion-panel>
+    <p
+      v-if="products.length <= 0"
+      class="font-italic"
+    >
+      Ei tuotteita varastossa
+    </p>
+
+    <v-expansion-panel
+      v-else
+    >
       <v-expansion-panel-content
         v-for="(product, i) in products"
         :key="i"

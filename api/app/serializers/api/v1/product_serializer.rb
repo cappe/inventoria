@@ -9,6 +9,10 @@ class Api::V1::ProductSerializer < ApplicationSerializer
 
   attribute :article, if: -> { should_include?(:article) }
 
+  def used
+    object.used?
+  end
+
   def article
     options = {
       adapter: ActiveModelSerializers::Adapter::Attributes,

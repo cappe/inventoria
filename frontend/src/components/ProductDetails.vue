@@ -35,7 +35,7 @@
       details() {
         return [
           {
-            label: 'Valmistuspäivä',
+            label: 'Valmistettu',
             value: this.$dayjs(this.product.manufactureDate).format('DD.MM.YYYY'),
           },
           {

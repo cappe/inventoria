@@ -46,9 +46,9 @@ export default new Router({
           component: () => import(/* webpackChunkName: "inventory" */ './views/Inventory.vue'),
         },
         {
-          path: 'tilaukset',
-          name: 'orders',
-          component: () => import(/* webpackChunkName: "orders" */ './views/Orders.vue'),
+          path: 'tapahtumat',
+          name: 'eventLog',
+          component: () => import(/* webpackChunkName: "eventLog" */ './views/EventLog.vue'),
         },
         {
           path: 'kayttaja',

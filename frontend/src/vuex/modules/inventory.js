@@ -15,14 +15,10 @@ const actions = {
     { commit },
     { include = [], used = false } = { include: [], used: false },
   ) {
-    let endpoint = '/products?';
+    let endpoint = `/products?used=${used}&`;
 
     if (include.length > 0) {
       endpoint += `include=${include.join(',')}&`;
-    }
-
-    if (used) {
-      endpoint += `used=${used}&`;
     }
 
     try {
@@ -42,6 +38,34 @@ const actions = {
 
       const successParams = {
         msg: `Tuote ${r.data.article.name} lisätty onnistuneesti`,
+        type: 'success',
+      };
+
+      await dispatch('snackbar/addNotification', successParams, { root: true });
+    } catch (e) {
+      const errorParams = {
+        msg: e.message,
+        type: 'error',
+      };
+
+      await dispatch('snackbar/addNotification', errorParams, { root: true });
+    }
+  },
+
+  async useProduct({ dispatch }, { barcode }) {
+    try {
+      const product = Gs1Parser.createProductFromBarode(barcode);
+      const {
+        gtin,
+        lot,
+      } = product.toString();
+
+      const endpoint = `/inventories/use_product?gtin=${gtin}&lot=${lot}&include=article`;
+
+      const r = await api.update(endpoint);
+
+      const successParams = {
+        msg: `Tuote ${r.data.article.name} käytetty onnistuneesti`,
         type: 'success',
       };
 

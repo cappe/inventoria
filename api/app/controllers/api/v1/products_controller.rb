@@ -8,6 +8,8 @@ class Api::V1::ProductsController < Api::V1::ApiController
 
     if ActiveModel::Type::Boolean.new.cast(params[:used])
       products = products.used
+    else
+      products = products.not_used
     end
 
     render json: products,

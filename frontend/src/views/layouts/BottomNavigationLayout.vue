@@ -75,8 +75,8 @@
           icon: 'business',
         },
         {
-          label: 'Tilaukset',
-          to: '/tilaukset',
+          label: 'Tapahtumat',
+          to: '/tapahtumat',
           color: 'teal',
           icon: 'history',
         },

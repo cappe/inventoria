@@ -18,7 +18,19 @@ class Api::V1::InventoriesController < Api::V1::ApiController
   end
 
   def use_product
+    includes = parse_include_params(:article)
 
+    result = Inventories::UseProductFromInventory.call(
+      current_user: current_user,
+      params: params
+    )
+
+    if result.success?
+      render json: result.product,
+             includes: includes
+    else
+      render json: { message: result.error }, status: :bad_request
+    end
   end
 
   private
