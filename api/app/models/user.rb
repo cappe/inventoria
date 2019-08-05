@@ -6,6 +6,10 @@ class User < ApplicationRecord
 
   belongs_to :inventory
 
+  USER_ROLES = %w(customer admin)
+
+  enum role: USER_ROLES
+
   validates :email,
             presence: true,
             uniqueness: { case_sensitive: false },
@@ -18,6 +22,21 @@ class User < ApplicationRecord
   validates :access_token,
             presence: true,
             uniqueness: true
+  validates :role,
+            presence: true,
+            inclusion: { in: USER_ROLES }
 
   before_save { email.downcase! }
+
+  def type
+    self.user_type
+  end
+
+  def is_customer
+    self.customer?
+  end
+
+  def is_admin
+    self.admin?
+  end
 end
