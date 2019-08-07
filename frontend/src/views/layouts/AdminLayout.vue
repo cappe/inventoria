@@ -39,27 +39,7 @@
     </v-navigation-drawer>
 
     <v-content>
-      <v-layout
-        v-if="$wait.any"
-        fill-height
-        column
-        justify-center
-        align-center
-      >
-        <v-progress-circular
-          :size="50"
-          color="primary"
-          indeterminate
-        />
-
-        <span class="mt-4">
-          Lataa sisältöä...
-        </span>
-      </v-layout>
-
-      <router-view
-        v-show="!$wait.any"
-      />
+      <router-view />
     </v-content>
 
     <snackbar />

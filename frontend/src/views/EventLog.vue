@@ -5,6 +5,7 @@
     <h1>Tapahtumat</h1>
 
     <v-data-table
+      :loading="$wait.is('loading event logs')"
       :headers="headers"
       :items="eventLogs"
       :pagination.sync="pagination"
@@ -29,7 +30,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+import { mapWaitingActions } from 'vue-wait';
 
 export default {
   data: () => ({
@@ -92,8 +94,8 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      loadEventLogs: 'eventLogs/loadEventLogs',
+    ...mapWaitingActions('eventLogs', {
+      loadEventLogs: 'loading event logs',
     }),
   },
 };

@@ -18,7 +18,22 @@
       </v-btn>
     </h1>
 
-    <product-list />
+    <v-tabs
+      v-model="activeTab"
+      exact
+      color="transparent"
+    >
+      <v-tab
+        v-for="(tab, i) of tabs"
+        :key="i"
+        :to="tab.route"
+        exact
+      >
+        {{ tab.name }}
+      </v-tab>
+    </v-tabs>
+
+    <router-view />
   </v-container>
 </template>
 
@@ -27,9 +42,25 @@
   import { mapWaitingActions } from 'vue-wait';
 
   export default {
-    components: {
-      ProductList: () => import('../../components/ProductList'),
-    },
+    props: ['id'],
+
+    data: vm => ({
+      activeTab: vm.$route.path,
+      tabs: [
+        {
+          name: 'Tuotteet',
+          route: {
+            name: 'adminInventoryProducts',
+          },
+        },
+        {
+          name: 'Tapahtumat',
+          route: {
+            name: 'adminInventoryEventLogs',
+          },
+        },
+      ],
+    }),
 
     computed: {
       ...mapGetters({

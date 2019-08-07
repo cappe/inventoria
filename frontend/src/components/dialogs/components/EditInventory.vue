@@ -154,11 +154,9 @@
           id: this.inventory.id,
         });
 
-        if (this.$route.name === 'adminInventory') {
-          this.$router.replace({
-            name: 'inventories',
-          });
-        }
+        this.$router.replace({
+          name: 'inventories',
+        });
 
         this.closeDialog();
         this.confirmingDestroy = false;

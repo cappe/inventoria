@@ -17,6 +17,7 @@
     </h1>
 
     <v-data-table
+      :loading="$wait.is('loading inventories')"
       :headers="headers"
       :items="inventories"
       :pagination.sync="pagination"
@@ -31,7 +32,7 @@
         <td>{{ props.item.name }}</td>
         <td class="text-xs-right">
           <v-btn
-            :to="{ name: 'adminInventory', params: { id: props.item.id } }"
+            :to="{ name: 'adminInventoryProducts', params: { id: props.item.id } }"
             flat
             color="primary"
             class="ma-0"
