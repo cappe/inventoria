@@ -16,7 +16,7 @@ const actions = {
   setCurrentInventoryId(context, { id }) {
     let inventoryId = Number.parseInt(id, 10);
 
-    if (this.$currentUser.isCustomer) {
+    if (this.$currentUser && this.$currentUser.isCustomer) {
       ({
         inventoryId,
       } = this.$currentUser);
