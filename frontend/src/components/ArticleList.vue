@@ -3,9 +3,10 @@
     v-model="__selectedArticles__"
     :loading="$wait.is('loading articles')"
     :headers="headers"
-    :items="articles"
+    :items="__articles__"
     :pagination.sync="pagination"
     :select-all="enableRowSelection"
+    :search="search"
     no-data-text="Ei artikkeleita"
     class="elevation-2"
   >
@@ -56,6 +57,16 @@
         type: Boolean,
         default: false,
       },
+
+      search: {
+        type: String,
+        default: '',
+      },
+
+      onlySelectedArticles: {
+        type: Boolean,
+        default: false,
+      },
     },
 
     data: () => ({
@@ -102,6 +113,14 @@
         articles: 'articles/articles',
         selectedArticles: 'articles/selectedArticles',
       }),
+
+      __articles__() {
+        if (this.onlySelectedArticles) {
+          return this.selectedArticles;
+        }
+
+        return this.articles;
+      },
 
       __selectedArticles__: {
         get() {

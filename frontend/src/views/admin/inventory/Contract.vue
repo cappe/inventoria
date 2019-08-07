@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-container
     fluid
   >
@@ -10,6 +10,31 @@
       class="px-0"
     >
       Valitse tälle varastolle komissiosopimuksen mukaiset artikkelit.
+    </v-subheader>
+
+    <v-layout
+      align-center
+    >
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Etsi artikkeleita..."
+        single-line
+        hide-details
+        class="mb-4 mr-5"
+      />
+
+      <v-checkbox
+        v-model="onlySelectedArticles"
+      >
+        <template v-slot:label>
+          <span
+            class="caption"
+          >
+            Näytä vain valitut
+          </span>
+        </template>
+      </v-checkbox>
 
       <v-spacer />
 
@@ -31,9 +56,11 @@
       >
         Tallenna
       </v-btn>
-    </v-subheader>
+    </v-layout>
 
     <article-list
+      :search="search"
+      :only-selected-articles="onlySelectedArticles"
       enable-row-selection
     />
   </v-container>
@@ -46,6 +73,11 @@
     components: {
       ArticleList: () => import('../../../components/ArticleList'),
     },
+
+    data: () => ({
+      search: null,
+      onlySelectedArticles: false,
+    }),
 
     methods: {
       ...mapWaitingActions('articles', {
