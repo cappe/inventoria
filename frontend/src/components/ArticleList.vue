@@ -44,6 +44,10 @@
         </v-btn>
       </td>
     </template>
+
+    <template v-slot:no-results>
+      Haulla ei löytynyt artikkeleita
+    </template>
   </v-data-table>
 </template>
 
