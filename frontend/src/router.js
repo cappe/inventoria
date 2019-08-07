@@ -57,5 +57,30 @@ export default new Router({
         },
       ],
     },
+    {
+      path: '/admin',
+      name: 'adminLayout',
+      component: () => import(/* webpackChunkName: "adminLayout" */ './views/layouts/AdminLayout.vue'),
+      meta: meta({
+        requiresAdmin: true,
+      }),
+      children: [
+        {
+          path: 'varastot',
+          name: 'inventories',
+          component: () => import(/* webpackChunkName: "inventories" */ './views/admin/Inventories.vue'),
+        },
+        {
+          path: 'varastot/:id',
+          name: 'adminInventory',
+          component: () => import(/* webpackChunkName: "adminInventory" */ './views/admin/Inventory.vue'),
+        },
+        {
+          path: 'kayttaja',
+          name: 'adminCurrentUser',
+          component: () => import(/* webpackChunkName: "adminCurrentUser" */ './views/CurrentUser.vue'),
+        },
+      ],
+    },
   ],
 });

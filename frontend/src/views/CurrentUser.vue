@@ -4,8 +4,15 @@
       Käyttäjä
     </h1>
 
+    <p>
+      {{ $currentUser.email }}
+    </p>
+
     <v-btn
       @click="onLogout"
+      flat
+      color="error"
+      class="ma-0"
     >
       Kirjaudu ulos
     </v-btn>

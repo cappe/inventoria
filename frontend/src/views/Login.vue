@@ -71,7 +71,11 @@ export default {
         redirect,
       } = this.$route.query;
 
-      let to = '/lukija';
+      const {
+        isAdmin,
+      } = this.$currentUser;
+
+      let to = isAdmin ? '/admin/varastot' : '/lukija';
 
       if (redirect) {
         to = redirect;

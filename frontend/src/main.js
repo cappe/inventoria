@@ -16,13 +16,21 @@ Vue.config.productionTip = false;
 
 router.beforeEach(async (to, from, next) => {
   const authed = await store.dispatch('currentUser/auth');
+  const {
+    isAdmin,
+  } = await store.getters['currentUser/user'];
   const isLoginPage = to.path === '/kirjaudu' || to.path === '/';
 
   let requiresAuth = false;
+  let requiresAdmin = false;
 
   to.matched.forEach((record) => {
     if (record.meta.requiresAuth) {
       requiresAuth = true;
+    }
+
+    if (record.meta.requiresAdmin) {
+      requiresAdmin = true;
     }
   });
 
@@ -30,10 +38,18 @@ router.beforeEach(async (to, from, next) => {
   //   .filter(r => r.meta.documentTitle)
   //   .reduce((acc, r) => `${r.meta.documentTitle} | ${acc}`, 'Mestamaster');
 
-  if ((authed && !isLoginPage) || (!authed && !requiresAuth)) {
+  const authedAndNotLoginPage = (authed && !isLoginPage);
+  const noneAuthPage = (!authed && !requiresAuth);
+  const authedAdminNotLoginPageIsAdmin = (authed && requiresAdmin && isAdmin && !isLoginPage);
+
+  if (authedAndNotLoginPage || noneAuthPage || authedAdminNotLoginPageIsAdmin) {
     next();
   } else if (authed && isLoginPage) {
-    next({ path: '/lukija' });
+    if (isAdmin) {
+      next({ path: '/admin/varastot' });
+    } else {
+      next({ path: '/lukija' });
+    }
   } else {
     await store.dispatch('currentUser/logout');
 

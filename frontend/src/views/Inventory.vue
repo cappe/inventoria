@@ -4,65 +4,14 @@
       Varasto
     </h1>
 
-    <p
-      v-if="products.length <= 0"
-      class="font-italic"
-    >
-      Ei tuotteita varastossa
-    </p>
-
-    <v-expansion-panel
-      v-else
-    >
-      <v-expansion-panel-content
-        v-for="(product, i) in products"
-        :key="i"
-      >
-        <template slot="header">
-          <div>
-            {{ product.article.name }}
-          </div>
-        </template>
-        <v-card>
-          <v-card-text
-            class="pl-4"
-          >
-            <product-details
-              :product="product"
-            />
-          </v-card-text>
-        </v-card>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
+    <product-list />
   </v-container>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { mapWaitingActions } from 'vue-wait';
-import ProductDetails from '../components/ProductDetails';
-
-export default {
-  components: {
-    ProductDetails,
-  },
-
-  computed: {
-    ...mapGetters({
-      products: 'inventory/products',
-    }),
-  },
-
-  async mounted() {
-    this.loadProducts({
-      include: ['article'],
-    });
-  },
-
-  methods: {
-    ...mapWaitingActions('inventory', {
-      loadProducts: 'loading products',
-    }),
-  },
-};
+  export default {
+    components: {
+      ProductList: () => import('../components/ProductList'),
+    },
+  };
 </script>
