@@ -14,6 +14,8 @@ Rails.application.routes.draw do
         patch 'use_product', to: 'use_product', as: :use_product_from_inventory
       end
 
+      resources :articles, only: [:index, :create, :update, :destroy]
+
       namespace :admin do
         resources :inventories, only: [:index, :show, :create, :update, :destroy] do
           resources :users, only: [:index, :create, :update, :destroy]

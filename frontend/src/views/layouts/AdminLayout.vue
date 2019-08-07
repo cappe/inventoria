@@ -68,6 +68,12 @@
           icon: 'group',
         },
         {
+          label: 'Kaikki artikkelit',
+          to: '/admin/artikkelit',
+          color: 'teal',
+          icon: 'list',
+        },
+        {
           label: 'Käyttäjä',
           to: '/admin/kayttaja',
           color: 'teal',

@@ -71,6 +71,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "inventories" */ './views/admin/Inventories.vue'),
         },
         {
+          path: 'artikkelit',
+          name: 'articles',
+          component: () => import(/* webpackChunkName: "articles" */ './views/admin/Articles.vue'),
+        },
+        {
           path: 'varastot/:inventoryId',
           name: 'adminInventory',
           component: () => import(/* webpackChunkName: "adminInventoryBase" */ './views/admin/Inventory.vue'),
