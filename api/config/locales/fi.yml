@@ -10,6 +10,7 @@ fi:
       general: Jotakin meni vikaan
       unauthorized: Sinulla ei ole oikeutta tehdä tätä
       not_found: Jotakin ei löytynyt
+      parameter_missing: Vaadittavia tietoja puuttuu
       invalid_include_attributes: Kysely sisältää ei-sallittuja attribuutteja
 
   audits:
@@ -27,12 +28,17 @@ fi:
         lot: LOT
         manufacture_date: Valmistettu
         expiry_date: Viimeinen käyttöpäivä
+      inventory:
+        orders: Tilauksia
+        products: Tuotteita
+        users: Käyttäjiä
+        name: Nimi
     errors:
       messages:
         record_invalid: 'Validointi epäonnistui: %{errors}'
         restrict_dependent_destroy:
-          has_one: Ei voida poistaa mallia koska tästä riippuvainen %{record} löytyy
-          has_many: Ei voida poistaa mallia koska tästä riippuvaisia %{record} löytyy
+          has_one: Ei voida poistaa, koska tästä riippuvainen %{record} löytyy
+          has_many: Ei voida poistaa, koska tästä riippuvaisia %{record} löytyy
   date:
     abbr_day_names:
       - su

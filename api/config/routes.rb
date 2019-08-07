@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       get 'audits/by_inventory', to: 'audits#by_inventory'
 
       namespace :admin do
-        resources :inventories, only: [:index, :show]
+        resources :inventories, only: [:index, :show, :create, :update, :destroy]
       end
     end
   end

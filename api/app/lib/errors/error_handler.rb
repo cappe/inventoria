@@ -7,6 +7,10 @@ module Errors
         respond(I18n.t('api.errors.general'), :internal_server_error, e)
       end
 
+      rescue_from ActionController::ParameterMissing do |e|
+        respond(I18n.t('api.errors.parameter_missing'), :unprocessable_entity, e)
+      end
+
       rescue_from ActiveRecord::RecordNotFound do |e|
         respond(I18n.t('api.errors.not_found'), :not_found, e)
       end
