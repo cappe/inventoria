@@ -14,12 +14,11 @@ module Audits
 
     def initialize(params)
       raise 'audit is missing' unless params[:audit]
-      raise 'user is missing' unless params[:user]
       raise 'product is missing' unless params[:product]
       raise 'article is missing' unless params[:article]
 
       self.audit = params[:audit]
-      self.user = params[:user]
+      self.user = params[:user] if params[:user]
       self.product = params[:product]
       self.article = params[:article]
     end

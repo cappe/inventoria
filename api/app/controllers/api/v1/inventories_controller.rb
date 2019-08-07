@@ -1,11 +1,15 @@
 class Api::V1::InventoriesController < Api::V1::ApiController
   include IncludeParams
 
+  def show
+    render json: current_inventory
+  end
+
   def place_product
     includes = parse_include_params(:article)
 
     result = Inventories::PlaceProductToInventory.call(
-      current_user: current_user,
+      current_inventory: current_inventory,
       product_params: product_params
     )
 
@@ -21,7 +25,7 @@ class Api::V1::InventoriesController < Api::V1::ApiController
     includes = parse_include_params(:article)
 
     result = Inventories::UseProductFromInventory.call(
-      current_user: current_user,
+      current_inventory: current_inventory,
       params: params
     )
 

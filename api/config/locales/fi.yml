@@ -33,6 +33,10 @@ fi:
         products: Tuotteita
         users: Käyttäjiä
         name: Nimi
+      user:
+        password: Salasana
+        access_token: Avain
+        email: Sähköposti
     errors:
       messages:
         record_invalid: 'Validointi epäonnistui: %{errors}'

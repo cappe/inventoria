@@ -3,5 +3,6 @@ class Api::V1::UserSerializer < ApplicationSerializer
              :email,
              :access_token,
              :is_customer,
-             :is_admin
+             :is_admin,
+             :inventory_id
 end

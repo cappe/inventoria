@@ -5,17 +5,19 @@ Rails.application.routes.draw do
       post '/login', to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
 
-      scope module: :inventories, path: 'inventories' do
+      resources :inventories, only: [:show] do
+        resources :products, only: [:index]
+
+        get 'event_logs', to: 'audits#inventory_event_logs'
+
         post 'place_product', to: 'place_product', as: :place_product_to_inventory
         patch 'use_product', to: 'use_product', as: :use_product_from_inventory
       end
 
-      resources :products, only: [:index]
-
-      get 'audits/by_inventory', to: 'audits#by_inventory'
-
       namespace :admin do
-        resources :inventories, only: [:index, :show, :create, :update, :destroy]
+        resources :inventories, only: [:index, :show, :create, :update, :destroy] do
+          resources :users, only: [:index, :create, :update, :destroy]
+        end
       end
     end
   end

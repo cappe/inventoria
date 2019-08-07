@@ -10,7 +10,11 @@ class Api::V1::ApiController < ApplicationController
   protected
 
     def current_inventory
-      @current_inventory ||= current_user.inventory
+      if current_user.admin?
+        @current_inventory ||= Inventory.find(params[:inventory_id])
+      else
+        @current_inventory ||= current_user.inventory
+      end
     end
 
     # Authenticate the user with token based authentication
@@ -19,7 +23,7 @@ class Api::V1::ApiController < ApplicationController
     end
 
     def require_admin
-      current_user&.admin? || render_unauthorized
+      current_user.admin? || render_unauthorized
     end
 
     def current_user

@@ -3,7 +3,6 @@ module Inventories
     include Interactor::Organizer
 
     before do
-      context.current_inventory = context.current_user.inventory
       context.gtin = context.params[:gtin]
       context.lot = context.params[:lot]
 

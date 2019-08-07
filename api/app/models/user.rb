@@ -2,9 +2,10 @@ class User < ApplicationRecord
   has_secure_password
   has_secure_token :access_token
 
-  has_many :orders, dependent: :restrict_with_exception
+  has_many :orders, dependent: :restrict_with_error
 
-  belongs_to :inventory
+  # This association is optional when user is admin
+  belongs_to :inventory, optional: true
 
   USER_ROLES = %w(customer admin)
 
@@ -20,13 +21,13 @@ class User < ApplicationRecord
             length: { minimum: 6, maximum: 32 },
             allow_nil: true
   validates :access_token,
-            presence: true,
             uniqueness: true
   validates :role,
             presence: true,
             inclusion: { in: USER_ROLES }
 
   before_save { email.downcase! }
+  before_validation :set_default_password
 
   def type
     self.user_type
@@ -39,4 +40,12 @@ class User < ApplicationRecord
   def is_admin
     self.admin?
   end
+
+  private
+
+    def set_default_password
+      return if self.password
+
+      self.password = self.password_confirmation = 'foobar'
+    end
 end

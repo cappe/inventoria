@@ -1,5 +1,5 @@
 class Api::V1::AuditsController < Api::V1::ApiController
-  def by_inventory
+  def inventory_event_logs
     result = Audits::ReadProductAudits.call(
       current_inventory: current_inventory
     )
