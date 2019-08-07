@@ -1,54 +1,109 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-data-table
-    v-model="__selectedArticles__"
-    :loading="$wait.is('loading articles')"
-    :headers="headers"
-    :items="__articles__"
-    :pagination.sync="pagination"
-    :select-all="enableRowSelection"
-    :search="search"
-    no-data-text="Ei artikkeleita"
-    class="elevation-2"
-  >
-    <template
-      v-slot:items="props"
+  <div>
+    <v-layout
+      align-center
     >
-      <td
-        v-if="enableRowSelection"
-      >
-        <v-checkbox
-          v-model="props.selected"
-          primary
-          hide-details
-        />
-      </td>
-      <td>{{ props.item.id }}</td>
-      <td>{{ props.item.name }}</td>
-      <td>{{ props.item.gtin13 }}</td>
-      <td>{{ props.item.gtin14 }}</td>
-      <td>{{ props.item.pid }}</td>
-      <td>{{ props.item.unit }}</td>
-      <td class="text-xs-right">
-        <v-btn
-          flat
-          icon
-          color="primary"
-          class="ma-0"
-          @click="editArticle(props.item)"
-        >
-          <v-icon
-            small
-          >
-            edit
-          </v-icon>
-        </v-btn>
-      </td>
-    </template>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Etsi artikkeleita..."
+        single-line
+        hide-details
+        class="mb-4 mr-5"
+      />
 
-    <template v-slot:no-results>
-      Haulla ei löytynyt artikkeleita
-    </template>
-  </v-data-table>
+      <v-checkbox
+        v-if="enableRowSelection"
+        v-model="onlySelectedArticles"
+      >
+        <template v-slot:label>
+          <span
+            class="caption"
+          >
+            Näytä vain valitut
+          </span>
+        </template>
+      </v-checkbox>
+
+      <v-spacer />
+
+      <v-btn
+        v-if="showRestore"
+        :disabled="$wait.is('updating selected articles')"
+        flat
+        color="error"
+        @click="restore"
+      >
+        Palauta
+      </v-btn>
+
+      <v-btn
+        v-if="showSave"
+        :disabled="$wait.is('updating selected articles')"
+        :loading="$wait.is('updating selected articles')"
+        :dark="!$wait.is('updating selected articles')"
+        color="teal"
+        class="mr-0"
+        @click="save"
+      >
+        Tallenna
+      </v-btn>
+    </v-layout>
+
+    <v-data-table
+      v-model="__selectedArticles__"
+      :loading="$wait.is('loading articles')"
+      :headers="headers"
+      :items="__articles__"
+      :pagination.sync="pagination"
+      :select-all="enableRowSelection"
+      :search="search"
+      no-data-text="Ei artikkeleita"
+      class="elevation-2"
+    >
+      <template
+        v-slot:items="props"
+      >
+        <td
+          v-if="enableRowSelection"
+        >
+          <v-checkbox
+            v-model="props.selected"
+            primary
+            hide-details
+          />
+        </td>
+        <td>{{ props.item.id }}</td>
+        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.gtin13 }}</td>
+        <td>{{ props.item.gtin14 }}</td>
+        <td>{{ props.item.pid }}</td>
+        <td>{{ props.item.unit }}</td>
+        <td
+          v-if="showActions"
+          class="text-xs-right"
+        >
+          <v-btn
+            flat
+            icon
+            color="primary"
+            class="ma-0"
+            @click="editArticle(props.item)"
+          >
+            <v-icon
+              small
+            >
+              edit
+            </v-icon>
+          </v-btn>
+        </td>
+      </template>
+
+      <template v-slot:no-results>
+        Haulla ei löytynyt artikkeleita
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
@@ -62,54 +117,30 @@
         default: false,
       },
 
-      search: {
-        type: String,
-        default: '',
+      showSave: {
+        type: Boolean,
+        default: false,
       },
 
-      onlySelectedArticles: {
+      showRestore: {
+        type: Boolean,
+        default: false,
+      },
+
+      showActions: {
         type: Boolean,
         default: false,
       },
     },
 
     data: () => ({
+      search: '',
+      onlySelectedArticles: false,
       pagination: {
         sortBy: 'id',
         descending: true,
         rowsPerPage: 10,
       },
-      headers: [
-        {
-          text: 'ID',
-          value: 'id',
-        },
-        {
-          text: 'Nimi',
-          value: 'name',
-        },
-        {
-          text: 'GTIN13',
-          value: 'gtin13',
-        },
-        {
-          text: 'GTIN14',
-          value: 'gtin14',
-        },
-        {
-          text: 'PID',
-          value: 'pid',
-        },
-        {
-          text: 'Tyyppi',
-          value: 'unit',
-        },
-        {
-          text: 'Toiminnot',
-          align: 'right',
-          sortable: false,
-        },
-      ],
     }),
 
     computed: {
@@ -117,6 +148,45 @@
         articles: 'articles/articles',
         selectedArticles: 'articles/selectedArticles',
       }),
+
+      headers() {
+        const headers = [
+          {
+            text: 'ID',
+            value: 'id',
+          },
+          {
+            text: 'Nimi',
+            value: 'name',
+          },
+          {
+            text: 'GTIN13',
+            value: 'gtin13',
+          },
+          {
+            text: 'GTIN14',
+            value: 'gtin14',
+          },
+          {
+            text: 'PID',
+            value: 'pid',
+          },
+          {
+            text: 'Tyyppi',
+            value: 'unit',
+          },
+        ];
+
+        if (this.showActions) {
+          headers.push({
+            text: 'Toiminnot',
+            align: 'right',
+            sortable: false,
+          });
+        }
+
+        return headers;
+      },
 
       __articles__() {
         if (this.onlySelectedArticles) {
@@ -158,7 +228,17 @@
 
       ...mapWaitingActions('articles', {
         loadArticles: 'loading articles',
+        updateSelectedArticles: 'updating selected articles',
+        resetSelectedArticles: 'resetting selected articles',
       }),
+
+      restore() {
+        this.resetSelectedArticles();
+      },
+
+      save() {
+        this.updateSelectedArticles();
+      },
 
       editArticle(article = null) {
         this.openDialog({
