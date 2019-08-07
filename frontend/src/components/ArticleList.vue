@@ -168,7 +168,7 @@
             value: 'gtin14',
           },
           {
-            text: 'PID',
+            text: 'Tuotenumero',
             value: 'pid',
           },
           {

@@ -56,10 +56,10 @@
         <v-text-field
           v-model="article.pid"
           :rules="[
-            v => !!v || 'PID on pakollinen',
-            v => v && v.length <= 255 || 'PID saa olla enintään 255 merkkiä',
+            v => !!v || 'Tuotenumero on pakollinen',
+            v => v && v.length <= 255 || 'Tuotenumero saa olla enintään 255 merkkiä',
           ]"
-          label="PID"
+          label="Tuotenumero"
           required
         />
 
