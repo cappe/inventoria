@@ -71,10 +71,9 @@ export default new Router({
           component: () => import(/* webpackChunkName: "inventories" */ './views/admin/Inventories.vue'),
         },
         {
-          path: 'varastot/:id',
+          path: 'varastot/:inventoryId',
           name: 'adminInventory',
           component: () => import(/* webpackChunkName: "adminInventoryBase" */ './views/admin/Inventory.vue'),
-          props: true,
           children: [
             {
               path: 'tuotteet',
@@ -85,6 +84,11 @@ export default new Router({
               path: 'tapahtumat',
               name: 'adminInventoryEventLogs',
               component: () => import(/* webpackChunkName: "adminInventoryEventLogs" */ './views/EventLog.vue'),
+            },
+            {
+              path: 'kayttajat',
+              name: 'adminInventoryUsers',
+              component: () => import(/* webpackChunkName: "adminInventoryUsers" */ './views/admin/inventory/Users.vue'),
             },
           ],
         },

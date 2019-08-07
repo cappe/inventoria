@@ -3,19 +3,28 @@ import Gs1Parser from '../../lib/gs1/Gs1Parser';
 import api from '../../utils/api';
 
 const initialState = () => ({
+  inventory: {},
   products: [],
 });
 
 const getters = {
+  inventory: state => state.inventory,
   products: state => state.products,
 };
 
 const actions = {
+  async loadInventory({ commit }) {
+    try {
+      const r = await api.get(`inventories/${this.$currentInventoryId}`);
+      commit('SET_INVENTORY', r);
+    } catch (e) {}
+  },
+
   async loadProducts(
     { commit },
     { include = [], used = false } = { include: [], used: false },
   ) {
-    let endpoint = `/products?used=${used}&`;
+    let endpoint = `inventories/${this.$currentInventoryId}/products?used=${used}&`;
 
     if (include.length > 0) {
       endpoint += `include=${include.join(',')}&`;
@@ -34,7 +43,7 @@ const actions = {
         product: product.toString(),
       };
 
-      const r = await api.post('/inventories/place_product?include=article', params);
+      const r = await api.post(`/inventories/${this.$currentInventoryId}/place_product?include=article`, params);
 
       const successParams = {
         msg: `Tuote ${r.data.article.name} lisätty onnistuneesti`,
@@ -60,7 +69,7 @@ const actions = {
         lot,
       } = product.toString();
 
-      const endpoint = `/inventories/use_product?gtin=${gtin}&lot=${lot}&include=article`;
+      const endpoint = `/inventories/${this.$currentInventoryId}/use_product?gtin=${gtin}&lot=${lot}&include=article`;
 
       const r = await api.update(endpoint);
 
@@ -82,6 +91,10 @@ const actions = {
 };
 
 const mutations = {
+  SET_INVENTORY(state, { data }) {
+    Vue.set(state, 'inventory', data);
+  },
+
   SET_PRODUCTS(state, { data }) {
     Vue.set(state, 'products', data);
   },

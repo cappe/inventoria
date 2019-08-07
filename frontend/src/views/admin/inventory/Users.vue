@@ -1,14 +1,16 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-container>
+  <v-container
+    fluid
+  >
     <h1>
-      Varastot
+      Käyttäjät
 
       <v-btn
         flat
         icon
         small
         color="teal"
-        @click="createInventory"
+        @click="editUser"
       >
         <v-icon>
           add
@@ -17,32 +19,31 @@
     </h1>
 
     <v-data-table
-      :loading="$wait.is('loading inventories')"
+      :loading="$wait.is('loading users')"
       :headers="headers"
-      :items="inventories"
+      :items="users"
       :pagination.sync="pagination"
-      no-data-text="Ei asiakkaita"
+      no-data-text="Ei käyttäjiä"
       class="elevation-2"
-      style="max-width: 700px;"
     >
       <template
         v-slot:items="props"
       >
         <td>{{ props.item.id }}</td>
-        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.email }}</td>
         <td class="text-xs-right">
           <v-btn
-            :to="{
-              name: 'adminInventoryProducts',
-              params: {
-                inventoryId: props.item.id,
-              },
-            }"
             flat
+            icon
             color="primary"
             class="ma-0"
+            @click="editUser(props.item)"
           >
-            Avaa
+            <v-icon
+              small
+            >
+              edit
+            </v-icon>
           </v-btn>
         </td>
       </template>
@@ -66,8 +67,8 @@
           value: 'id',
         },
         {
-          text: 'Nimi',
-          value: 'name',
+          text: 'Sähköposti',
+          value: 'email',
         },
         {
           text: 'Toiminnot',
@@ -79,12 +80,12 @@
 
     computed: {
       ...mapGetters({
-        inventories: 'admin/inventories/inventories',
+        users: 'admin/users/users',
       }),
     },
 
-    mounted() {
-      this.loadInventories();
+    async mounted() {
+      await this.loadUsers();
     },
 
     methods: {
@@ -92,15 +93,15 @@
         openDialog: 'dialog/openDialog',
       }),
 
-      ...mapWaitingActions('admin/inventories', {
-        loadInventories: 'loading inventories',
+      ...mapWaitingActions('admin/users', {
+        loadUsers: 'loading users',
       }),
 
-      createInventory() {
+      editUser(user = null) {
         this.openDialog({
-          dialogComponent: 'edit-inventory',
+          dialogComponent: 'edit-user',
           dialogProps: {
-            inventory: {},
+            user,
           },
         });
       },

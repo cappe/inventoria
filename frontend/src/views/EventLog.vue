@@ -16,7 +16,7 @@
         v-slot:items="props"
       >
         <td>{{ props.item.id }}</td>
-        <td>{{ $dayjs(props.item.createdAt).format('DD.MM.YYYY HH:mm') }}</td>
+        <td>{{ $dayjs(props.item.createdAt).format('DD.MM.YYYY HH:mm:ss') }}</td>
         <td>{{ props.item.article.name }}</td>
         <td>{{ props.item.product.gtin }}</td>
         <td>{{ props.item.product.lot }}</td>

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import api from '../../utils/api';
 import {
   setAccessToken,
@@ -24,7 +25,6 @@ const actions = {
 
       return true;
     } catch (e) {
-      console.log('e', e);
       const errorParams = {
         msg: 'Kirjautuminen epäonnistui, tarkista sähköposti ja salasana',
         type: 'error',
@@ -76,6 +76,7 @@ const mutations = {
     setAccessToken(data.accessToken);
 
     Vue.prototype.$currentUser = data;
+    Vuex.Store.prototype.$currentUser = data;
 
     Vue.set(state, 'data', data);
   },
@@ -86,6 +87,7 @@ const mutations = {
     Vue.set(state, 'data', initialState().data);
 
     Vue.prototype.$currentUser = undefined;
+    Vuex.Store.prototype.$currentUser = undefined;
   },
 };
 

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import api from '../../../utils/api';
 
 const initialState = () => ({
@@ -12,6 +13,19 @@ const getters = {
 };
 
 const actions = {
+  setCurrentInventoryId(context, { id }) {
+    let inventoryId = Number.parseInt(id, 10);
+
+    if (this.$currentUser.isCustomer) {
+      ({
+        inventoryId,
+      } = this.$currentUser);
+    }
+
+    Vue.prototype.$currentInventoryId = inventoryId; // Used inside Vue components
+    Vuex.Store.prototype.$currentInventoryId = inventoryId; // Used inside Vuex (store)
+  },
+
   async loadInventories({ commit }) {
     try {
       const r = await api.get('admin/inventories');
@@ -19,9 +33,9 @@ const actions = {
     } catch (e) {}
   },
 
-  async loadInventory({ commit }, { id }) {
+  async loadInventory({ commit }) {
     try {
-      const r = await api.get(`admin/inventories/${id}`);
+      const r = await api.get(`admin/inventories/${this.$currentInventoryId}`);
       commit('SET_INVENTORY', r);
     } catch (e) {}
   },

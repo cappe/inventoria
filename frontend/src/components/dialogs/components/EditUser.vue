@@ -12,7 +12,7 @@
         <v-btn
           v-if="!isNew"
           :disabled="disableActions"
-          :loading="$wait.is('destroying inventory')"
+          :loading="$wait.is('destroying user')"
           color="error"
           flat
           @click="destroy"
@@ -23,13 +23,14 @@
 
       <v-card-text>
         <v-text-field
-          ref="inventoryNameRef"
-          v-model="inventory.name"
+          ref="userEmailRef"
+          v-model="user.email"
           :rules="[
-            v => !!v || 'Nimi on pakollinen',
-            v => v && v.length <= 255 || 'Nimi saa olla enintään 255 merkkiä',
+            v => !!v || 'Sähköposti on pakollinen',
+            v => v && v.length <= 255 || 'Sähköposti saa olla enintään 255 merkkiä',
           ]"
-          label="Nimi"
+          label="Sähköposti"
+          type="email"
           required
         />
       </v-card-text>
@@ -48,7 +49,7 @@
 
         <v-btn
           :disabled="disableActions"
-          :loading="$wait.is('saving inventory')"
+          :loading="$wait.is('saving user')"
           color="success"
           type="submit"
         >
@@ -66,7 +67,7 @@
 
   export default {
     data: () => ({
-      inventory: {},
+      user: {},
       formValidation: false,
       confirmingDestroy: false,
     }),
@@ -85,30 +86,30 @@
       },
 
       isNew() {
-        return !Object.keys(this.inventory).includes('id');
+        return !Object.keys(this.user).includes('id');
       },
 
       title() {
         if (this.isNew) {
-          return 'Luo uusi varasto';
+          return 'Luo uusi käyttäjä';
         }
 
-        return 'Muokkaa varastoa';
+        return 'Muokkaa käyttäjää';
       },
 
       disableActions() {
         return this.$wait.is([
-          'saving inventory',
-          'destroying inventory',
+          'saving user',
+          'destroying user',
         ]);
       },
     },
 
     created() {
-      this.inventory = cloneDeep(this.dialogProps.inventory);
+      this.user = cloneDeep(this.dialogProps.user);
 
       this.$nextTick(() => {
-        this.$refs.inventoryNameRef.focus();
+        this.$refs.userEmailRef.focus();
       });
     },
 
@@ -117,10 +118,10 @@
         closeDialog: 'dialog/closeDialog',
       }),
 
-      ...mapWaitingActions('admin/inventories', {
-        createInventory: 'saving inventory',
-        updateInventory: 'saving inventory',
-        destroyInventory: 'destroying inventory',
+      ...mapWaitingActions('admin/users', {
+        createUser: 'saving user',
+        updateUser: 'saving user',
+        destroyUser: 'destroying user',
       }),
 
       cancel() {
@@ -129,18 +130,18 @@
 
       async submit() {
         const params = {
-          id: this.inventory.id,
+          id: this.user.id,
           payload: {
-            inventory: {
-              name: this.inventory.name,
+            user: {
+              email: this.user.email,
             },
           },
         };
 
         if (this.isNew) {
-          await this.createInventory(params);
+          await this.createUser(params);
         } else {
-          await this.updateInventory(params);
+          await this.updateUser(params);
         }
 
         this.closeDialog();
@@ -152,12 +153,8 @@
           return;
         }
 
-        await this.destroyInventory({
-          id: this.inventory.id,
-        });
-
-        this.$router.replace({
-          name: 'inventories',
+        await this.destroyUser({
+          id: this.user.id,
         });
 
         this.closeDialog();

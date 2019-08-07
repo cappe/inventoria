@@ -3,6 +3,7 @@
     <v-navigation-drawer
       permanent
       app
+      width="200"
     >
       <v-toolbar flat>
         <v-list>

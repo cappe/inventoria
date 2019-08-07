@@ -14,7 +14,7 @@ const actions = {
     { commit },
   ) {
     try {
-      const r = await api.get('/audits/by_inventory');
+      const r = await api.get(`inventories/${this.$currentInventoryId}/event_logs`);
       commit('SET_EVENT_LOGS', r);
     } catch (e) {}
   },

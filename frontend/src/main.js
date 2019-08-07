@@ -38,6 +38,10 @@ router.beforeEach(async (to, from, next) => {
   //   .filter(r => r.meta.documentTitle)
   //   .reduce((acc, r) => `${r.meta.documentTitle} | ${acc}`, 'Mestamaster');
 
+  await store.dispatch('admin/inventories/setCurrentInventoryId', {
+    id: to.params.inventoryId,
+  });
+
   const authedAndNotLoginPage = (authed && !isLoginPage);
   const noneAuthPage = (!authed && !requiresAuth);
   const authedAdminNotLoginPageIsAdmin = (authed && requiresAdmin && isAdmin && !isLoginPage);

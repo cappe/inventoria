@@ -42,8 +42,6 @@
   import { mapWaitingActions } from 'vue-wait';
 
   export default {
-    props: ['id'],
-
     data: vm => ({
       activeTab: vm.$route.path,
       tabs: [
@@ -59,6 +57,12 @@
             name: 'adminInventoryEventLogs',
           },
         },
+        {
+          name: 'Käyttäjät',
+          route: {
+            name: 'adminInventoryUsers',
+          },
+        },
       ],
     }),
 
@@ -69,7 +73,7 @@
     },
 
     mounted() {
-      this.loadInventory({ id: this.$route.params.id });
+      this.loadInventory();
     },
 
     methods: {
