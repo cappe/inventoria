@@ -18,7 +18,22 @@
       </v-btn>
     </h1>
 
-    <article-list />
+    <v-layout>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Etsi artikkeleita..."
+        single-line
+        hide-details
+        class="mb-4 mr-5"
+      />
+
+      <v-spacer />
+    </v-layout>
+
+    <article-list
+      :search="search"
+    />
   </v-container>
 </template>
 
@@ -29,6 +44,10 @@
     components: {
       ArticleList: () => import('../../components/ArticleList'),
     },
+
+    data: () => ({
+      search: '',
+    }),
 
     methods: {
       ...mapActions({
