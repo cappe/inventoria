@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :inventories, only: [:index, :show, :create, :update, :destroy] do
           resources :users, only: [:index, :create, :update, :destroy]
+
+          put 'inventory_articles', to: 'inventory_articles#replace_all'
         end
       end
     end

@@ -63,6 +63,12 @@
             name: 'adminInventoryUsers',
           },
         },
+        {
+          name: 'Sopimus',
+          route: {
+            name: 'adminInventoryContract',
+          },
+        },
       ],
     }),
 

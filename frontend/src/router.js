@@ -95,6 +95,11 @@ export default new Router({
               name: 'adminInventoryUsers',
               component: () => import(/* webpackChunkName: "adminInventoryUsers" */ './views/admin/inventory/Users.vue'),
             },
+            {
+              path: 'sopimus',
+              name: 'adminInventoryContract',
+              component: () => import(/* webpackChunkName: "adminInventoryContract" */ './views/admin/inventory/Contract.vue'),
+            },
           ],
         },
         {

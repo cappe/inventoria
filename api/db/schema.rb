@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_211856) do
+ActiveRecord::Schema.define(version: 2019_08_07_153518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,15 @@ ActiveRecord::Schema.define(version: 2019_08_05_211856) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "inventory_articles", force: :cascade do |t|
+    t.bigint "inventory_id"
+    t.bigint "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_inventory_articles_on_article_id"
+    t.index ["inventory_id"], name: "index_inventory_articles_on_inventory_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer "count", default: 1, null: false
     t.bigint "product_id"
@@ -95,6 +104,8 @@ ActiveRecord::Schema.define(version: 2019_08_05_211856) do
     t.index ["inventory_id"], name: "index_users_on_inventory_id"
   end
 
+  add_foreign_key "inventory_articles", "articles"
+  add_foreign_key "inventory_articles", "inventories"
   add_foreign_key "orders", "inventories"
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "users"

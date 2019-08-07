@@ -61,6 +61,18 @@ export default {
     return fetch(`${BASE_URL}/${url}`, options).then(parseResponse);
   },
 
+  put(url, data) {
+    const options = {
+      method: 'PUT',
+      headers: getHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify(data),
+    };
+
+    return fetch(`${BASE_URL}/${url}`, options).then(parseResponse);
+  },
+
   delete(url) {
     const options = {
       method: 'DELETE',
