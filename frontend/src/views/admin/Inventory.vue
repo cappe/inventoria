@@ -2,6 +2,20 @@
   <v-container>
     <h1>
       Varasto {{ inventory.name }}
+
+      <v-btn
+        flat
+        icon
+        small
+        color="teal"
+        @click="editInventory"
+      >
+        <v-icon
+          small
+        >
+          edit
+        </v-icon>
+      </v-btn>
     </h1>
 
     <product-list />
@@ -9,7 +23,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
   import { mapWaitingActions } from 'vue-wait';
 
   export default {
@@ -28,9 +42,22 @@
     },
 
     methods: {
+      ...mapActions({
+        openDialog: 'dialog/openDialog',
+      }),
+
       ...mapWaitingActions('admin/inventories', {
         loadInventory: 'loading inventory',
       }),
+
+      editInventory() {
+        this.openDialog({
+          dialogComponent: 'edit-inventory',
+          dialogProps: {
+            inventory: this.inventory,
+          },
+        });
+      },
     },
   };
 </script>

@@ -8,6 +8,7 @@
         icon
         small
         color="teal"
+        @click="createInventory"
       >
         <v-icon>
           add
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
   import { mapWaitingActions } from 'vue-wait';
 
   export default {
@@ -82,9 +83,22 @@
     },
 
     methods: {
+      ...mapActions({
+        openDialog: 'dialog/openDialog',
+      }),
+
       ...mapWaitingActions('admin/inventories', {
         loadInventories: 'loading inventories',
       }),
+
+      createInventory() {
+        this.openDialog({
+          dialogComponent: 'edit-inventory',
+          dialogProps: {
+            inventory: {},
+          },
+        });
+      },
     },
   };
 </script>
