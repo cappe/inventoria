@@ -13,6 +13,10 @@ Rails.application.routes.draw do
       resources :products, only: [:index]
 
       get 'audits/by_inventory', to: 'audits#by_inventory'
+
+      namespace :admin do
+        resources :inventories, only: [:index, :show]
+      end
     end
   end
 end

@@ -8,6 +8,7 @@ fi:
   api:
     errors:
       general: Jotakin meni vikaan
+      unauthorized: Sinulla ei ole oikeutta tehdä tätä
       not_found: Jotakin ei löytynyt
       invalid_include_attributes: Kysely sisältää ei-sallittuja attribuutteja
 

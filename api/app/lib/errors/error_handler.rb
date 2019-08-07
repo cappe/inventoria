@@ -11,13 +11,19 @@ module Errors
         respond(I18n.t('api.errors.not_found'), :not_found, e)
       end
 
-      rescue_from BadRequest do |e|
-        respond(e.message, :bad_request, e)
+      rescue_from Errors::Base do |e|
+        respond(e.message, e.status, e)
       end
     end
 
     def respond(message, status, e)
-      Rails.logger.debug "e: #{e}".red
+      Rails.logger.debug('====== ERROR ======'.red)
+      Rails.logger.debug("status: #{status}".yellow)
+      Rails.logger.debug("message: #{message}".yellow)
+      Rails.logger.debug("error message: #{e.message}".yellow)
+      Rails.logger.debug(e.backtrace.first(5).join("\n").red)
+      Rails.logger.debug('====== ERROR ENDS ======'.red)
+
 
       render json: { message: message }, status: status
     end

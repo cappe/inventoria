@@ -18,6 +18,10 @@ class Api::V1::ApiController < ApplicationController
       authenticate_token || render_unauthorized
     end
 
+    def require_admin
+      current_user&.admin? || render_unauthorized
+    end
+
     def current_user
       @current_user
     end
@@ -32,8 +36,7 @@ class Api::V1::ApiController < ApplicationController
       end
     end
 
-    def render_unauthorized(realm = "Application")
-      self.headers["WWW-Authenticate"] = %(Token realm="#{realm}")
-      render json: 'Bad credentials', status: :unauthorized
+    def render_unauthorized
+      raise Errors::Unauthorized.new
     end
 end
