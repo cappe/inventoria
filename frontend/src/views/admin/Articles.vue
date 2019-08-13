@@ -19,7 +19,7 @@
     </h1>
 
     <article-list
-      show-actions
+      show-article-actions
     />
   </v-container>
 </template>

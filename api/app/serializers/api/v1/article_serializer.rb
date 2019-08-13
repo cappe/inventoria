@@ -6,5 +6,16 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
              :gtin14,
              :unit
 
-  attribute :belongs_to_inventory, if: -> { should_include?(:belongs_to_inventory) }
+  attribute :products, if: -> { should_include?(:products) }
+
+  def products
+    options = {
+      adapter: ActiveModelSerializers::Adapter::Attributes,
+      each_serializer: Api::V1::ProductSerializer
+    }
+
+    ActiveModelSerializers::SerializableResource
+      .new(object.products, options)
+      .as_json
+  end
 end

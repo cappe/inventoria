@@ -2,31 +2,16 @@ class Api::V1::ArticlesController < Api::V1::ApiController
   before_action :require_admin, except: [:index]
 
   def index
-    unless params[:belongs_to_inventory]
-      render json: Article.all,
-             root: 'data'
+    render json: Article.all,
+           root: 'data'
+  end
 
-      return
-    end
-
-    inventory_id = params[:belongs_to_inventory]
-
-    # Using subquery here so that Rails can do its magic on sanitazing the inventory_id
-    subquery = InventoryArticle
-                 .where('article_id = articles.id')
-                 .where(inventory_id: inventory_id)
-                 .select(:id)
-                 .to_sql
-
-    articles = Article
-                 .select(
-                   "articles.*",
-                   "EXISTS (#{subquery}) AS belongs_to_inventory"
-                 )
+  def with_products
+    articles = Article.with_products_in_inventory(current_inventory)
 
     render json: articles,
            root: 'data',
-           includes: [:belongs_to_inventory]
+           includes: [:products]
   end
 
   def create

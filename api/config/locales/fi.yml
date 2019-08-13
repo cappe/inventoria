@@ -34,6 +34,8 @@ fi:
         inventory_articles: Tuotteita
         users: Käyttäjiä
         name: Nimi
+      inventory_article:
+        count: Tuotteen lukumäärä
       user:
         password: Salasana
         access_token: Avain

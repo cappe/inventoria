@@ -1,6 +1,6 @@
 module IncludeParams
   def parse_include_params(*valid_include_params)
-    return unless params[:include]
+    return [] unless params[:include]
 
     include_params = params[:include].split(',').map(&:to_sym)
     rest = include_params - valid_include_params

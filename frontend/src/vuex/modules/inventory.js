@@ -4,12 +4,12 @@ import api from '../../utils/api';
 
 const initialState = () => ({
   inventory: {},
-  products: [],
+  articlesWithProducts: [],
 });
 
 const getters = {
   inventory: state => state.inventory,
-  products: state => state.products,
+  articlesWithProducts: state => state.articlesWithProducts,
 };
 
 const actions = {
@@ -20,19 +20,10 @@ const actions = {
     } catch (e) {}
   },
 
-  async loadProducts(
-    { commit },
-    { include = [], used = false } = { include: [], used: false },
-  ) {
-    let endpoint = `inventories/${this.$currentInventoryId}/products?used=${used}&`;
-
-    if (include.length > 0) {
-      endpoint += `include=${include.join(',')}&`;
-    }
-
+  async loadArticlesWithProducts({ commit }) {
     try {
-      const r = await api.get(endpoint);
-      commit('SET_PRODUCTS', r);
+      const r = await api.get(`inventories/${this.$currentInventoryId}/articles_with_products`);
+      commit('SET_ARTICLES_PRODUCTS', r);
     } catch (e) {}
   },
 
@@ -95,8 +86,8 @@ const mutations = {
     Vue.set(state, 'inventory', data);
   },
 
-  SET_PRODUCTS(state, { data }) {
-    Vue.set(state, 'products', data);
+  SET_ARTICLES_PRODUCTS(state, { data }) {
+    Vue.set(state, 'articlesWithProducts', data);
   },
 };
 

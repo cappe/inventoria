@@ -9,54 +9,37 @@
         label="Etsi artikkeleita..."
         single-line
         hide-details
-        class="mb-4 mr-5"
+        class="mb-4"
       />
 
-      <v-checkbox
-        v-if="enableRowSelection"
-        v-model="onlySelectedArticles"
+      <!--<v-spacer />-->
+
+      <v-layout
+        justify-end
       >
-        <template v-slot:label>
-          <span
-            class="caption"
+        <div>
+          <v-checkbox
+            v-if="showInventoryActions"
+            v-model="onlySelectedArticles"
+            class="right"
           >
-            Näytä vain valitut
-          </span>
-        </template>
-      </v-checkbox>
-
-      <v-spacer />
-
-      <v-btn
-        v-if="showRestore"
-        :disabled="$wait.is('updating selected articles')"
-        flat
-        color="error"
-        @click="restore"
-      >
-        Palauta
-      </v-btn>
-
-      <v-btn
-        v-if="showSave"
-        :disabled="$wait.is('updating selected articles')"
-        :loading="$wait.is('updating selected articles')"
-        :dark="!$wait.is('updating selected articles')"
-        color="teal"
-        class="mr-0"
-        @click="save"
-      >
-        Tallenna
-      </v-btn>
+            <template v-slot:label>
+              <span
+                class="caption"
+              >
+                Näytä vain valitut
+              </span>
+            </template>
+          </v-checkbox>
+        </div>
+      </v-layout>
     </v-layout>
 
     <v-data-table
-      v-model="__selectedArticles__"
       :loading="$wait.is('loading articles')"
       :headers="headers"
       :items="__articles__"
       :pagination.sync="pagination"
-      :select-all="enableRowSelection"
       :search="search"
       no-data-text="Ei artikkeleita"
       class="elevation-2"
@@ -64,15 +47,6 @@
       <template
         v-slot:items="props"
       >
-        <td
-          v-if="enableRowSelection"
-        >
-          <v-checkbox
-            v-model="props.selected"
-            primary
-            hide-details
-          />
-        </td>
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
         <td>{{ props.item.gtin13 }}</td>
@@ -80,7 +54,32 @@
         <td>{{ props.item.pid }}</td>
         <td>{{ props.item.unit }}</td>
         <td
-          v-if="showActions"
+          v-if="showInventoryActions"
+          class="text-xs-right"
+        >
+          {{ inventoryCount(props.item) }}
+        </td>
+        <td
+          v-if="showInventoryActions"
+          class="text-xs-right"
+        >
+          <v-btn
+            small
+            flat
+            icon
+            color="info"
+            class="ma-0"
+            @click="editInventoryCount(props.item)"
+          >
+            <v-icon
+              small
+            >
+              edit
+            </v-icon>
+          </v-btn>
+        </td>
+        <td
+          v-if="showArticleActions"
           class="text-xs-right"
         >
           <v-btn
@@ -112,7 +111,7 @@
 
   export default {
     props: {
-      enableRowSelection: {
+      showInventoryActions: {
         type: Boolean,
         default: false,
       },
@@ -127,7 +126,7 @@
         default: false,
       },
 
-      showActions: {
+      showArticleActions: {
         type: Boolean,
         default: false,
       },
@@ -146,7 +145,7 @@
     computed: {
       ...mapGetters({
         articles: 'articles/articles',
-        selectedArticles: 'articles/selectedArticles',
+        inventoryArticleById: 'admin/inventoryArticles/inventoryArticleById',
       }),
 
       headers() {
@@ -177,7 +176,21 @@
           },
         ];
 
-        if (this.showActions) {
+        if (this.showInventoryActions) {
+          headers.push({
+            text: 'Määrä',
+            align: 'right',
+            sortable: false,
+          });
+
+          headers.push({
+            text: 'Muokkaa',
+            align: 'right',
+            sortable: false,
+          });
+        }
+
+        if (this.showArticleActions) {
           headers.push({
             text: 'Toiminnot',
             align: 'right',
@@ -190,59 +203,70 @@
 
       __articles__() {
         if (this.onlySelectedArticles) {
-          return this.selectedArticles;
+          const selectedArticles = this.articles.reduce((acc, article) => {
+            const ia = this.inventoryArticleById(article.id);
+
+            if (ia) {
+              acc.push(article);
+            }
+
+            return acc;
+          }, []);
+
+          return selectedArticles;
         }
 
         return this.articles;
       },
 
-      __selectedArticles__: {
-        get() {
-          return this.selectedArticles;
-        },
+      inventoryCount() {
+        return ({ id }) => {
+          const ia = this.inventoryArticleById(id);
 
-        set(newVal) {
-          this.setSelectedArticles({
-            selectedArticles: newVal,
-          });
-        },
+          if (!ia) return '—';
+
+          return `${ia.count} kpl`;
+        };
       },
     },
 
     async mounted() {
-      await this.loadArticles({
-        getParams: [
-          {
-            key: 'belongs_to_inventory',
-            value: this.$currentInventoryId,
-          },
-        ],
-      });
+      const promises = [];
+
+      promises.push(this.loadArticles());
+
+      if (this.showInventoryActions) {
+        promises.push(this.loadInventoryArticles());
+      }
+
+      await Promise.all(promises);
     },
 
     methods: {
       ...mapActions({
         openDialog: 'dialog/openDialog',
-        setSelectedArticles: 'articles/setSelectedArticles',
       }),
 
       ...mapWaitingActions('articles', {
         loadArticles: 'loading articles',
-        updateSelectedArticles: 'updating selected articles',
-        resetSelectedArticles: 'resetting selected articles',
       }),
 
-      restore() {
-        this.resetSelectedArticles();
-      },
-
-      save() {
-        this.updateSelectedArticles();
-      },
+      ...mapWaitingActions('admin/inventoryArticles', {
+        loadInventoryArticles: 'loading inventory articles',
+      }),
 
       editArticle(article = null) {
         this.openDialog({
           dialogComponent: 'edit-article',
+          dialogProps: {
+            article,
+          },
+        });
+      },
+
+      editInventoryCount(article) {
+        this.openDialog({
+          dialogComponent: 'edit-inventory-count',
           dialogProps: {
             article,
           },

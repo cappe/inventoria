@@ -13,7 +13,7 @@
     </v-subheader>
 
     <article-list
-      enable-row-selection
+      show-inventory-actions
       show-restore
       show-save
     />

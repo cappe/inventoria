@@ -12,4 +12,12 @@ class Article < ApplicationRecord
             presence: true,
             length: { maximum: 255 },
             uniqueness: true
+
+  scope :with_products_in_inventory, -> (inventory) {
+    includes(:products)
+      .where(products: {
+        inventory: inventory,
+      })
+      .merge(Product.not_used)
+  }
 end

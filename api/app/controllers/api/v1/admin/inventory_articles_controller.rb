@@ -1,16 +1,32 @@
 class Api::V1::Admin::InventoryArticlesController < Api::V1::ApiController
   before_action :require_admin
 
-  def replace_all
-    article_ids = inventory_articles_params[:article_ids]
+  def index
+    render json: current_inventory.inventory_articles,
+           root: 'data'
+  end
 
-    result = Inventories::ReplaceAllInventoryArticles.call({
-      current_inventory: current_inventory,
-      article_ids: article_ids
-    })
+  def create
+    inventory_article = current_inventory.inventory_articles.build(inventory_articles_params)
 
-    if result.success?
-      head :no_content
+    if inventory_article.save
+      render json: inventory_article
+    else
+      raise Errors::BadRequest.new(inventory_article.errors.full_messages)
+    end
+  end
+
+  def update
+    if inventory_article.update_attributes(inventory_articles_params)
+      render json: inventory_article
+    else
+      raise Errors::BadRequest.new(inventory_article.errors.full_messages)
+    end
+  end
+
+  def destroy
+    if inventory_article.destroy
+      render json: inventory_article
     else
       raise Errors::General
     end
@@ -19,6 +35,13 @@ class Api::V1::Admin::InventoryArticlesController < Api::V1::ApiController
   private
 
     def inventory_articles_params
-      params.require(:inventory_articles).permit(article_ids: [])
+      params.require(:inventory_article).permit(
+        :article_id,
+        :count
+      )
+    end
+
+    def inventory_article
+      @inventory_article ||= current_inventory.inventory_articles.find(params[:id])
     end
 end
