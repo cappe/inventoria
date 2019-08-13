@@ -25,7 +25,7 @@ module Errors
       Rails.logger.debug("status: #{status}".yellow)
       Rails.logger.debug("message: #{message}".yellow)
       Rails.logger.debug("error message: #{e.message}".yellow)
-      Rails.logger.debug(e.backtrace.first(5).join("\n").red)
+      Rails.logger.debug(e.backtrace.first(25).join("\n").red)
       Rails.logger.debug('====== ERROR ENDS ======'.red)
 
 

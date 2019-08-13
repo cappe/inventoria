@@ -1,7 +1,7 @@
 <template>
   <div>
     <p
-      v-if="products.length <= 0"
+      v-if="articlesWithProducts.length <= 0"
       class="font-italic"
     >
       Ei tuotteita varastossa
@@ -11,20 +11,55 @@
       v-else
     >
       <v-expansion-panel-content
-        v-for="(product, i) in products"
+        v-for="(article, i) in articlesWithProducts"
         :key="i"
       >
         <template slot="header">
-          <div>
-            {{ product.article.name }}
-          </div>
+          <v-layout
+            align-center
+          >
+            <v-icon
+              v-if="article.saldo === article.saldoTotal"
+              color="teal"
+            >
+              check
+            </v-icon>
+
+            <v-icon
+              v-if="article.saldo > 0 && article.saldo < article.saldoTotal"
+              color="orange"
+            >
+              warning
+            </v-icon>
+
+            <v-icon
+              v-if="article.saldo <= 0"
+              color="error"
+            >
+              error
+            </v-icon>
+
+            <div
+              class="ml-4"
+            >
+              <div
+                class="subheading"
+              >
+                {{ article.name }}
+              </div>
+
+              <div
+                class="grey--text text--darken-1"
+              >
+                Tuotesaldo {{ article.saldo }} / {{ article.saldoTotal }}
+              </div>
+            </div>
+          </v-layout>
         </template>
         <v-card>
-          <v-card-text
-            class="pl-4"
-          >
+          <v-card-text>
             <product-details
-              :product="product"
+              :products="article.products"
             />
           </v-card-text>
         </v-card>
@@ -45,19 +80,17 @@
 
     computed: {
       ...mapGetters({
-        products: 'inventory/products',
+        articlesWithProducts: 'inventory/articlesWithProducts',
       }),
     },
 
     async mounted() {
-      this.loadProducts({
-        include: ['article'],
-      });
+      this.loadArticlesWithProducts();
     },
 
     methods: {
       ...mapWaitingActions('inventory', {
-        loadProducts: 'loading products',
+        loadArticlesWithProducts: 'loading articles with products',
       }),
     },
   };

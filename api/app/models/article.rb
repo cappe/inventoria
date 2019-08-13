@@ -1,5 +1,6 @@
 class Article < ApplicationRecord
   has_many :products, dependent: :restrict_with_error
+  has_many :inventory_articles, dependent: :restrict_with_error
 
   validates :name,
             :unit,

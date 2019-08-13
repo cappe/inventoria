@@ -7,11 +7,24 @@ class Api::V1::ArticlesController < Api::V1::ApiController
   end
 
   def with_products
-    articles = Article.with_products_in_inventory(current_inventory)
+    articles = current_inventory.inventory_articles
+      .joins(:article)
+      .select(
+        'articles.id AS id',
+        :name,
+        :pid,
+        :gtin13,
+        :gtin14,
+        :unit,
+        'count AS saldo_total',
+        'articles.id AS article_id'
+      )
+      .includes(article: [:products])
 
     render json: articles,
            root: 'data',
-           includes: [:products]
+           includes: [:products, :saldo],
+           each_serializer: Api::V1::ArticleSerializer
   end
 
   def create

@@ -6,7 +6,13 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
              :gtin14,
              :unit
 
+  attribute :saldo, if: -> { should_include?(:saldo) }
+  attribute :saldo_total, if: -> { responds_to?(:saldo_total) }
   attribute :products, if: -> { should_include?(:products) }
+
+  def saldo
+    object.article.products.length
+  end
 
   def products
     options = {
@@ -15,7 +21,7 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
     }
 
     ActiveModelSerializers::SerializableResource
-      .new(object.products, options)
+      .new(object.article.products, options)
       .as_json
   end
 end

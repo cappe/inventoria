@@ -1,69 +1,63 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div>
-    <p
-      v-for="(detail, i) in details"
-      :key="i"
-      class="mb-2"
-    >
-      <span
-        class="d-block font-weight-bold"
-      >
-        {{ detail.label }}
-      </span>
 
-      <span>
-        {{ detail.value }}
-      </span>
-    </p>
+    <v-data-table
+      :headers="headers"
+      :items="products"
+      :pagination.sync="pagination"
+      no-data-text="Ei tuotteita"
+      hide-actions
+      class="elevation-2 blue"
+    >
+      <template
+        v-slot:items="props"
+      >
+        <td>{{ $dayjs(props.item.expiryDate).format('DD.MM.YYYY') }}</td>
+        <td>{{ $dayjs(props.item.manufactureDate).format('DD.MM.YYYY') }}</td>
+        <td>{{ props.item.gtin }}</td>
+        <td>{{ props.item.lot }}</td>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
 <script>
   export default {
     props: {
-      product: {
-        type: Object,
+      products: {
+        type: Array,
         required: true,
       },
     },
 
-    computed: {
-      article() {
-        return this.product.article;
+    data: () => ({
+      pagination: {
+        sortBy: 'expiryDate',
+        rowsPerPage: 10,
       },
 
-      details() {
-        return [
-          {
-            label: 'Valmistettu',
-            value: this.$dayjs(this.product.manufactureDate).format('DD.MM.YYYY'),
-          },
-          {
-            label: 'Viimeinen käyttöpäivä',
-            value: this.$dayjs(this.product.expiryDate).format('DD.MM.YYYY'),
-          },
-          {
-            label: 'Tuotenumero',
-            value: this.article.pid,
-          },
-          {
-            label: 'LOT',
-            value: this.product.lot,
-          },
-          {
-            label: 'GTIN13',
-            value: this.article.gtin13,
-          },
-          {
-            label: 'GTIN14',
-            value: this.article.gtin14,
-          },
-          {
-            label: 'Tyyppi',
-            value: this.article.unit,
-          },
-        ];
-      },
+      headers: [
+        {
+          text: 'Viimeinen käyttöpäivä',
+          value: 'expiryDate',
+        },
+        {
+          text: 'Valmistettu',
+          value: 'manufactureDate',
+        },
+        {
+          text: 'GTIN',
+          value: 'gtin',
+        },
+        {
+          text: 'LOT',
+          value: 'lot',
+        },
+      ],
+    }),
+
+    computed: {
+
     },
   };
 </script>
