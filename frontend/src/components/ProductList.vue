@@ -18,26 +18,22 @@
           <v-layout
             align-center
           >
-            <v-icon
-              v-if="article.saldo === article.saldoTotal"
-              color="teal"
+            <div
+              class="text-xs-center"
             >
-              check
-            </v-icon>
+              <v-icon
+                :color="vIcon(article).color"
+              >
+                {{ vIcon(article).icon }}
+              </v-icon>
 
-            <v-icon
-              v-if="article.saldo > 0 && article.saldo < article.saldoTotal"
-              color="orange"
-            >
-              warning
-            </v-icon>
-
-            <v-icon
-              v-if="article.saldo <= 0"
-              color="error"
-            >
-              error
-            </v-icon>
+              <span
+                v-if="article.saldo > article.saldoTotal"
+                class="caption d-block"
+              >
+                +{{ article.saldo - article.saldoTotal }}
+              </span>
+            </div>
 
             <div
               class="ml-4"
@@ -51,7 +47,7 @@
               <div
                 class="grey--text text--darken-1"
               >
-                Tuotesaldo {{ article.saldo }} / {{ article.saldoTotal }}
+                Saldo {{ article.saldo }} / {{ article.saldoTotal }}
               </div>
             </div>
           </v-layout>
@@ -82,6 +78,33 @@
       ...mapGetters({
         articlesWithProducts: 'inventory/articlesWithProducts',
       }),
+
+      vIcon() {
+        return (article) => {
+          const icon = {
+            color: '',
+            icon: '',
+          };
+
+          const {
+            saldo,
+            saldoTotal,
+          } = article;
+
+          if (saldo <= 0) {
+            icon.color = 'error';
+            icon.icon = 'error';
+          } else if (saldo > 0 && saldo < saldoTotal) {
+            icon.color = 'orange';
+            icon.icon = 'warning';
+          } else {
+            icon.color = 'teal';
+            icon.icon = 'check';
+          }
+
+          return icon;
+        };
+      },
     },
 
     async mounted() {

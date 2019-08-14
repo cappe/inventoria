@@ -7,12 +7,8 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
              :unit
 
   attribute :saldo, if: -> { should_include?(:saldo) }
-  attribute :saldo_total, if: -> { responds_to?(:saldo_total) }
+  attribute :saldo_total, if: -> { should_include?(:saldo_total) }
   attribute :products, if: -> { should_include?(:products) }
-
-  def saldo
-    object.article.products.length
-  end
 
   def products
     options = {
@@ -21,7 +17,23 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
     }
 
     ActiveModelSerializers::SerializableResource
-      .new(object.article.products, options)
+      .new(products_not_used, options)
       .as_json
   end
+
+  def saldo
+    products_not_used.length
+  end
+
+  def saldo_total
+    return 0 unless object.inventory_articles.length > 0
+
+    object.inventory_articles.first.count
+  end
+
+  private
+
+    def products_not_used
+      @products_not_used ||= object.products.select { |p| !p.used? }
+    end
 end
