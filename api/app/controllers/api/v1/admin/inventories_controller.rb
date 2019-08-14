@@ -3,21 +3,18 @@ class Api::V1::Admin::InventoriesController < Api::V1::ApiController
 
   def index
     render json: Inventory.all,
-           root: 'data',
-           each_serializer: Api::V1::InventorySerializer
+           root: 'data'
   end
 
   def show
-    render json: inventory,
-           serializer: Api::V1::InventorySerializer
+    render json: inventory
   end
 
   def create
     inventory = Inventory.new(inventory_params)
 
     if inventory.save
-      render json: inventory,
-             serializer: Api::V1::InventorySerializer
+      render json: inventory
     else
       raise Errors::BadRequest.new(inventory.errors.full_messages)
     end
@@ -25,8 +22,7 @@ class Api::V1::Admin::InventoriesController < Api::V1::ApiController
 
   def update
     if inventory.update_attributes(inventory_params)
-      render json: inventory,
-             serializer: Api::V1::InventorySerializer
+      render json: inventory
     else
       raise Errors::BadRequest.new(inventory.errors.full_messages)
     end
@@ -34,8 +30,7 @@ class Api::V1::Admin::InventoriesController < Api::V1::ApiController
 
   def destroy
     if inventory.destroy
-      render json: inventory,
-             serializer: Api::V1::InventorySerializer
+      render json: inventory
     else
       if inventory.errors.full_messages.length > 0
         raise Errors::BadRequest.new(inventory.errors.full_messages)
