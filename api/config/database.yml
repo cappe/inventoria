@@ -84,5 +84,5 @@ test:
 production:
   <<: *default
   database: dentsply_production
-  host: <%= Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :db_host) %>
-  password: <%= Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :db_password) %>
+  host: <%= ENV['RAILS_DB_HOST'] %>
+  password: <%= ENV['RAILS_DB_PASSWORD'] %>
