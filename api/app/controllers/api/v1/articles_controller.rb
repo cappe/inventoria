@@ -1,5 +1,5 @@
 class Api::V1::ArticlesController < Api::V1::ApiController
-  before_action :require_admin, except: [:index]
+  before_action :require_admin, except: [:index, :with_products]
 
   def index
     render json: Article.all,
