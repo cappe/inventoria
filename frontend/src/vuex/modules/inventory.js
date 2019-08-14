@@ -20,6 +20,35 @@ const actions = {
     } catch (e) {}
   },
 
+  async loadArticle(context, { gtin }) { // eslint-disable-line
+    try {
+      const r = await api.get(`article_by_gtin/${gtin}`);
+
+      return r.data;
+    } catch (e) {}
+  },
+
+  async processBarcode({ dispatch }, { barcode, ...rest }) {
+    try {
+      const product = Gs1Parser.createProductFromBarode(barcode).toString();
+
+      const article = await dispatch('loadArticle', {
+        gtin: product.gtin,
+      });
+
+      const dialogParams = {
+        dialogComponent: 'show-barcode-result',
+        dialogProps: {
+          product,
+          article,
+          ...rest,
+        },
+      };
+
+      await dispatch('dialog/openDialog', dialogParams, { root: true });
+    } catch (e) {}
+  },
+
   async loadArticlesWithProducts({ commit }) {
     try {
       const r = await api.get(`inventories/${this.$currentInventoryId}/articles_with_products`);
@@ -27,14 +56,9 @@ const actions = {
     } catch (e) {}
   },
 
-  async placeProduct({ dispatch }, { barcode }) {
+  async placeProduct({ dispatch }, { payload }) {
     try {
-      const product = Gs1Parser.createProductFromBarode(barcode);
-      const params = {
-        product: product.toString(),
-      };
-
-      const r = await api.post(`/inventories/${this.$currentInventoryId}/place_product?include=article`, params);
+      const r = await api.post(`/inventories/${this.$currentInventoryId}/place_product?include=article`, payload);
 
       const successParams = {
         msg: `Tuote ${r.data.article.name} lisätty varastoon`,
@@ -52,13 +76,12 @@ const actions = {
     }
   },
 
-  async useProduct({ dispatch }, { barcode }) {
+  async useProduct({ dispatch }, { payload }) {
     try {
-      const product = Gs1Parser.createProductFromBarode(barcode);
       const {
         gtin,
         lot,
-      } = product.toString();
+      } = payload.product;
 
       const endpoint = `/inventories/${this.$currentInventoryId}/use_product?gtin=${gtin}&lot=${lot}&include=article`;
 

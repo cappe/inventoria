@@ -18,7 +18,7 @@
           class="px-5"
           :active-class="activeClasses"
         >
-          Lue varastoon
+          Lisää varastoon
         </v-btn>
 
         <v-btn
@@ -40,15 +40,9 @@
     />
 
     <v-btn
-      @click="create"
+      @click="simulateCameraAction"
     >
-      Lue varastoon
-    </v-btn>
-
-    <v-btn
-      @click="update"
-    >
-      Käytä tuote
+      Lue tuote
     </v-btn>
 
   </v-container>
@@ -94,8 +88,7 @@ export default {
 
   methods: {
     ...mapActions({
-      placeProduct: 'inventory/placeProduct',
-      useProduct: 'inventory/useProduct',
+      processBarcode: 'inventory/processBarcode',
     }),
 
     async readBarcode() {
@@ -108,15 +101,7 @@ export default {
           text: barcode,
         } = await this.readFromCamera(deviceId);
 
-        const params = {
-          barcode,
-        };
-
-        if (this.isPlacingProduct) {
-          await this.placeProduct(params);
-        } else if (this.isUsingProduct) {
-          await this.useProduct(params);
-        }
+        this.process(barcode);
 
         this.readBarcode();
       } catch (e) {
@@ -144,16 +129,20 @@ export default {
       return result;
     },
 
-    create() {
-      this.placeProduct({
-        barcode: '0107392532132612111606161721061610189264',
-      });
+    simulateCameraAction() {
+      const barcode = '0107392532132612111606161721061610189264';
+
+      this.process(barcode);
     },
 
-    update() {
-      this.useProduct({
-        barcode: '0107392532132612111606161721061610189264',
-      });
+    async process(barcode) {
+      const params = {
+        barcode,
+        isPlacingProduct: this.isPlacingProduct,
+        isUsingProduct: this.isUsingProduct,
+      };
+
+      await this.processBarcode(params);
     },
   },
 };

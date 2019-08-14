@@ -37,16 +37,19 @@
     </v-bottom-nav>
 
     <snackbar />
+    <base-dialog />
 
   </v-app>
 </template>
 
 <script>
   import Snackbar from '@/components/Snackbar';
+  import BaseDialog from '@/components/dialogs/BaseDialog';
 
   export default {
     components: {
       Snackbar,
+      BaseDialog,
     },
 
     data: () => ({
