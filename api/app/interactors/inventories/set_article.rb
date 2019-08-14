@@ -5,8 +5,6 @@ module Inventories
     def call
       gtin = context.product_params[:gtin]
 
-      gtin.slice!(0) # Removes first character
-
       article = Article
                   .where(gtin13: gtin)
                   .or(Article.where(gtin14: gtin))

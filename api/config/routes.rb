@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
       resources :articles, only: [:index, :create, :update, :destroy]
 
+      get 'article_by_gtin/:gtin', to: 'articles#show'
+
       namespace :admin do
         resources :inventories, only: [:index, :show, :create, :update, :destroy] do
           resources :users, only: [:index, :create, :update, :destroy]

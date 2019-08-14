@@ -1,5 +1,5 @@
 class Api::V1::ArticlesController < Api::V1::ApiController
-  before_action :require_admin, except: [:index, :with_products]
+  before_action :require_admin, except: [:index, :with_products, :show]
 
   def index
     render json: Article.all,
@@ -25,6 +25,10 @@ class Api::V1::ArticlesController < Api::V1::ApiController
              :saldo_total
            ],
            each_serializer: Api::V1::ArticleSerializer
+  end
+
+  def show
+    render json: article
   end
 
   def create
@@ -60,7 +64,16 @@ class Api::V1::ArticlesController < Api::V1::ApiController
   private
 
   def article
-    @article ||= Article.find(params[:id])
+    if params[:gtin]
+      @article ||= Article
+                     .where('gtin13 = :gtin OR gtin14 = :gtin', {
+                       gtin: params[:gtin],
+                     })
+                     .limit(1)
+                     .first!
+    else
+      @article ||= Article.find(params[:id])
+    end
   end
 
   def article_params

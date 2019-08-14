@@ -40,20 +40,4 @@ class Product < ApplicationRecord
   def write_audit_comment_on_destroy
     self.audit_comment = I18n.t('audits.product_audit.destroy')
   end
-
-  def manufacture_date=(manufacture_date)
-    if manufacture_date.length == 6
-      manufacture_date = "20#{manufacture_date}"
-    end
-
-    super manufacture_date
-  end
-
-  def expiry_date=(expiry_date)
-    if expiry_date.length == 6
-      expiry_date = "20#{expiry_date}"
-    end
-
-    super expiry_date
-  end
 end
