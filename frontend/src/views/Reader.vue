@@ -4,17 +4,33 @@
       Reader
     </h1>
 
-    <v-btn
-      @click="create"
+    <v-layout
+      justify-center
     >
-      Create product
-    </v-btn>
+      <v-btn-toggle
+        v-model="action"
+        mandatory
+        class="elevation-0 transparent mb-4"
+      >
+        <v-btn
+          flat
+          large
+          class="px-5"
+          :active-class="activeClasses"
+        >
+          Lue varastoon
+        </v-btn>
 
-    <v-btn
-      @click="update"
-    >
-      Use product
-    </v-btn>
+        <v-btn
+          flat
+          large
+          class="px-5"
+          :active-class="activeClasses"
+        >
+          Käytä tuote
+        </v-btn>
+      </v-btn-toggle>
+    </v-layout>
 
     <video
       id="video"
@@ -22,6 +38,19 @@
       height="100%"
       style="border: 1px solid gray"
     />
+
+    <v-btn
+      @click="create"
+    >
+      Lue varastoon
+    </v-btn>
+
+    <v-btn
+      @click="update"
+    >
+      Käytä tuote
+    </v-btn>
+
   </v-container>
 </template>
 
@@ -34,10 +63,33 @@ import { mapActions } from 'vuex';
 export default {
   data: () => ({
     codeReader: new BrowserDatamatrixCodeReader(),
+    action: 0,
   }),
 
+  computed: {
+    isPlacingProduct() {
+      return this.action === 0;
+    },
+
+    isUsingProduct() {
+      return this.action === 1;
+    },
+
+    activeClasses() {
+      let classes = 'white--text elevation-12 v-btn--active ';
+
+      if (this.isPlacingProduct) {
+        classes += 'teal';
+      } else if (this.isUsingProduct) {
+        classes += 'info';
+      }
+
+      return classes;
+    },
+  },
+
   mounted() {
-    // this.readBarcode();
+    this.readBarcode();
   },
 
   methods: {
@@ -50,13 +102,21 @@ export default {
       try {
         const deviceId = await this.getDeviceId();
 
+        if (!deviceId) return;
+
         const {
           text: barcode,
         } = await this.readFromCamera(deviceId);
 
-        await this.placeProduct({
+        const params = {
           barcode,
-        });
+        };
+
+        if (this.isPlacingProduct) {
+          await this.placeProduct(params);
+        } else if (this.isUsingProduct) {
+          await this.useProduct(params);
+        }
 
         this.readBarcode();
       } catch (e) {

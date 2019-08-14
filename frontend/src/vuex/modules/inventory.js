@@ -37,7 +37,7 @@ const actions = {
       const r = await api.post(`/inventories/${this.$currentInventoryId}/place_product?include=article`, params);
 
       const successParams = {
-        msg: `Tuote ${r.data.article.name} lisätty onnistuneesti`,
+        msg: `Tuote ${r.data.article.name} lisätty varastoon`,
         type: 'success',
       };
 
@@ -65,8 +65,8 @@ const actions = {
       const r = await api.update(endpoint);
 
       const successParams = {
-        msg: `Tuote ${r.data.article.name} käytetty onnistuneesti`,
-        type: 'success',
+        msg: `Tuote ${r.data.article.name} käytetty`,
+        type: 'info',
       };
 
       await dispatch('snackbar/addNotification', successParams, { root: true });
