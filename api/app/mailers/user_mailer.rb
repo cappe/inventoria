@@ -3,6 +3,6 @@ class UserMailer < ApplicationMailer
     @user = user
 
     mail to: user.email,
-         subject: 'Kirjautumislinkki - inventoria.fi'
+         subject: 'Kirjautumislinkki Inventoriaan'
   end
 end
