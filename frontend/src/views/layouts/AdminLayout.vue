@@ -8,13 +8,19 @@
       <v-toolbar flat>
         <v-list>
           <v-list-tile>
-            <v-list-tile-title
-              class="title text-xs-center"
-            >
-              <v-icon>
-                favorite_border
-              </v-icon>
-            </v-list-tile-title>
+            <v-list-tile-content>
+              <v-list-tile-title
+                class="title text-xs-center"
+              >
+                Inventoria
+              </v-list-tile-title>
+
+              <v-list-tile-sub-title
+                class="text-xs-center caption"
+              >
+                {{ subtitle }}
+              </v-list-tile-sub-title>
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-toolbar>
@@ -50,6 +56,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   import Snackbar from '@/components/Snackbar';
   import BaseDialog from '@/components/dialogs/BaseDialog';
 
@@ -57,6 +64,27 @@
     components: {
       Snackbar,
       BaseDialog,
+    },
+
+    computed: {
+      ...mapGetters({
+        isDevEnv: 'utils/isDevEnv',
+        isDemoEnv: 'utils/isDemoEnv',
+        isProductionEnv: 'utils/isProductionEnv',
+      }),
+
+
+      subtitle() {
+        if (this.isDevEnv) {
+          return 'Local';
+        }
+
+        if (this.isDemoEnv) {
+          return 'Demo';
+        }
+
+        return 'Dentsply Sirona';
+      },
     },
 
     data: () => ({

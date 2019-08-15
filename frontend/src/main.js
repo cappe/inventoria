@@ -34,9 +34,9 @@ router.beforeEach(async (to, from, next) => {
     }
   });
 
-  // document.title = to.matched
-  //   .filter(r => r.meta.documentTitle)
-  //   .reduce((acc, r) => `${r.meta.documentTitle} | ${acc}`, 'Mestamaster');
+  document.title = to.matched
+    .filter(r => r.meta.documentTitle)
+    .reduce((acc, r) => `${r.meta.documentTitle} | ${acc}`, 'Inventoria');
 
   await store.dispatch('admin/inventories/setCurrentInventoryId', {
     id: to.params.inventoryId,

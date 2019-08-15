@@ -37,6 +37,7 @@ services:
       - /usr/src/node_modules
     environment:
       - VUE_APP_API_URL=localhost:3000
+      - VUE_APP_ENV=development
     depends_on:
       - api
 

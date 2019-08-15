@@ -78,7 +78,7 @@ const mutations = {
     Vue.prototype.$currentUser = data;
     Vuex.Store.prototype.$currentUser = data;
 
-    Vue.set(state, 'data', data);
+    Vue.set(state, 'user', data);
   },
 
   LOGOUT(state) {

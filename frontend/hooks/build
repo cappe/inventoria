@@ -3,4 +3,5 @@
 docker build \
   -t $IMAGE_NAME \
   --build-arg VUE_APP_API_URL=$VUE_APP_API_URL \
+  --build-arg VUE_APP_ENV=$VUE_APP_ENV \
   .
