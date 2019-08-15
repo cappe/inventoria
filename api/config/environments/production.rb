@@ -90,7 +90,7 @@ Rails.application.configure do
   }
 
   ActionMailer::Base.smtp_settings = {
-    :address              =>  'mail04.domainhotelli.fi',
+    :address              =>  'smtp.gmail.com',
     :domain               =>  Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :frontend_host),
     :port                 =>  587,
     :user_name            =>  Rails.application.credentials.dig(:mailer, :username),

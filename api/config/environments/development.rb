@@ -31,7 +31,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -59,7 +59,7 @@ Rails.application.configure do
   }
 
   ActionMailer::Base.smtp_settings = {
-    :address              =>  'mail04.domainhotelli.fi',
+    :address              =>  'smtp.gmail.com',
     :domain               =>  Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :frontend_host),
     :port                 =>  587,
     :user_name            =>  Rails.application.credentials.dig(:mailer, :username),
