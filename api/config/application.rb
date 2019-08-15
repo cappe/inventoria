@@ -40,7 +40,7 @@ module Dentsply
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins {
-          "https://#{Rails.application.credentials.dig(ENV['RAILS_ENV'].to_sym, :access_control_allow_origin)}"
+          "https://#{Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :access_control_allow_origin)}"
         }
         resource '*',
                  headers: :any,

@@ -27,7 +27,7 @@ class User < ApplicationRecord
             inclusion: { in: USER_ROLES }
 
   before_save { email.downcase! }
-  before_validation :set_default_password
+  before_validation :set_default_password, on: :create
 
   scope :admins, -> { where(role: :admin) }
 
@@ -50,8 +50,6 @@ class User < ApplicationRecord
   private
 
     def set_default_password
-      return if self.password
-
-      self.password = self.password_confirmation = 'foobar'
+      self.password = self.password_confirmation = SecureRandom.base58(6)
     end
 end
