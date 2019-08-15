@@ -10,6 +10,8 @@ class Article < ApplicationRecord
   validates :pid,
             :gtin,
             presence: true,
-            length: { maximum: 255 },
-            uniqueness: true
+            length: { maximum: 255 }
+
+  validates :gtin,
+            uniqueness: { scope: :pid }
 end
