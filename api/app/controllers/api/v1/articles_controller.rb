@@ -65,12 +65,7 @@ class Api::V1::ArticlesController < Api::V1::ApiController
 
   def article
     if params[:gtin]
-      @article ||= Article
-                     .where('gtin13 = :gtin OR gtin14 = :gtin', {
-                       gtin: params[:gtin],
-                     })
-                     .limit(1)
-                     .first!
+      @article ||= Article.find_by!(gtin: params[:gtin])
     else
       @article ||= Article.find(params[:id])
     end
@@ -80,8 +75,7 @@ class Api::V1::ArticlesController < Api::V1::ApiController
     params.require(:article).permit(
       :name,
       :pid,
-      :gtin13,
-      :gtin14,
+      :gtin,
       :unit
     )
   end

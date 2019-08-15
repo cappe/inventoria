@@ -10,7 +10,7 @@ class Api::V1::ApiController < ApplicationController
   protected
 
     def current_inventory
-      if current_user.admin?
+      if current_user.admin? || current_user.superadmin?
         @current_inventory ||= Inventory.find(params[:inventory_id])
       else
         @current_inventory ||= current_user.inventory

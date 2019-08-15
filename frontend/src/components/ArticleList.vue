@@ -49,8 +49,7 @@
       >
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.name }}</td>
-        <td>{{ props.item.gtin13 }}</td>
-        <td>{{ props.item.gtin14 }}</td>
+        <td>{{ props.item.gtin }}</td>
         <td>{{ props.item.pid }}</td>
         <td>{{ props.item.unit }}</td>
         <td
@@ -159,12 +158,8 @@
             value: 'name',
           },
           {
-            text: 'GTIN13',
-            value: 'gtin13',
-          },
-          {
-            text: 'GTIN14',
-            value: 'gtin14',
+            text: 'GTIN',
+            value: 'gtin',
           },
           {
             text: 'Tuotenumero',

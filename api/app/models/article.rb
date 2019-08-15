@@ -8,8 +8,7 @@ class Article < ApplicationRecord
             length: { maximum: 255 }
 
   validates :pid,
-            :gtin13,
-            :gtin14,
+            :gtin,
             presence: true,
             length: { maximum: 255 },
             uniqueness: true

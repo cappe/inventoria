@@ -34,22 +34,12 @@
         />
 
         <v-text-field
-          v-model="article.gtin13"
+          v-model="article.gtin"
           :rules="[
-            v => !!v || 'GTIN13 on pakollinen',
-            v => v && v.length <= 255 || 'GTIN13 saa olla enintään 255 merkkiä',
+            v => !!v || 'GTIN on pakollinen',
+            v => v && v.length <= 255 || 'GTIN saa olla enintään 255 merkkiä',
           ]"
-          label="GTIN13"
-          required
-        />
-
-        <v-text-field
-          v-model="article.gtin14"
-          :rules="[
-            v => !!v || 'GTIN14 on pakollinen',
-            v => v && v.length <= 255 || 'GTIN14 saa olla enintään 255 merkkiä',
-          ]"
-          label="GTIN14"
+          label="GTIN"
           required
         />
 
@@ -173,8 +163,7 @@
           payload: {
             article: {
               name: this.article.name,
-              gtin13: this.article.gtin13,
-              gtin14: this.article.gtin14,
+              gtin: this.article.gtin,
               pid: this.article.pid,
               unit: this.article.unit,
             },

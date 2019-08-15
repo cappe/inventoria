@@ -6,8 +6,7 @@ module Inventories
       gtin = context.product_params[:gtin]
 
       article = Article
-                  .where(gtin13: gtin)
-                  .or(Article.where(gtin14: gtin))
+                  .where(gtin: gtin)
                   .first
 
       if article
