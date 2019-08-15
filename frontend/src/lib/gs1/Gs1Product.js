@@ -6,7 +6,7 @@ class Gs1Product {
     expiryDate,
   }) {
     this.lot = lot;
-    this.gtin = gtin.substring(1); // Drops the first character
+    this.gtin = gtin;
 
     this.manufactureDate = `20${manufactureDate}`;
     this.expiryDate = `20${expiryDate}`;
