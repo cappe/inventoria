@@ -11,17 +11,16 @@ module ExcelImports
     def read
       worksheet = self.workbook[0]
 
-      6.upto(Float::INFINITY) do |row_index|
+      1.upto(Float::INFINITY) do |row_index|
         row = worksheet[row_index]
 
         break if row.nil?
 
         params = {
-          pid: row[1]&.value&.to_s.strip,
+          pid: row[0]&.value&.to_s.strip,
+          gtin: row[1]&.value&.to_s.strip,
           name: row[2]&.value&.to_s.strip,
-          gtin13: row[3]&.value&.to_s.strip,
-          gtin14: row[4]&.value&.to_s.strip,
-          unit: row[5]&.value&.to_s.strip,
+          unit: row[3]&.value&.to_s.strip,
         }
 
         article = Article.new(params)
