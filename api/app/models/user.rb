@@ -7,7 +7,7 @@ class User < ApplicationRecord
   # This association is optional when user is admin
   belongs_to :inventory, optional: true
 
-  USER_ROLES = %w(customer admin)
+  USER_ROLES = %w(customer admin superadmin)
 
   enum role: USER_ROLES
 
@@ -29,6 +29,8 @@ class User < ApplicationRecord
   before_save { email.downcase! }
   before_validation :set_default_password
 
+  scope :admins, -> { where(role: :admin) }
+
   def type
     self.user_type
   end
@@ -39,6 +41,10 @@ class User < ApplicationRecord
 
   def is_admin
     self.admin?
+  end
+
+  def is_superadmin
+    self.superadmin?
   end
 
   private

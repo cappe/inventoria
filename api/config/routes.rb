@@ -24,6 +24,10 @@ Rails.application.routes.draw do
           resources :inventory_articles, only: [:index, :create, :update, :destroy]
         end
       end
+
+      namespace :superadmin do
+        resources :users, only: [:index, :create, :update, :destroy]
+      end
     end
   end
 end

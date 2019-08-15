@@ -124,6 +124,12 @@
         destroyUser: 'destroying user',
       }),
 
+      ...mapWaitingActions('superadmin/users', {
+        superadminCreateUser: { action: 'createUser', loader: 'saving user' },
+        superadminUpdateUser: { action: 'updateUser', loader: 'saving user' },
+        superadminDestroyUser: { action: 'destroyUser', loader: 'destroying user' },
+      }),
+
       cancel() {
         this.closeDialog();
       },
@@ -139,9 +145,17 @@
         };
 
         if (this.isNew) {
-          await this.createUser(params);
+          if (this.$currentUser.isSuperadmin) {
+            await this.superadminCreateUser(params);
+          } else {
+            await this.createUser(params);
+          }
         } else {
-          await this.updateUser(params);
+          if (this.$currentUser.isSuperadmin) { // eslint-disable-line
+            await this.superadminUpdateUser(params);
+          } else {
+            await this.updateUser(params);
+          }
         }
 
         this.closeDialog();
@@ -153,9 +167,15 @@
           return;
         }
 
-        await this.destroyUser({
-          id: this.user.id,
-        });
+        if (this.$currentUser.isSuperadmin) {
+          await this.superadminDestroyUser({
+            id: this.user.id,
+          });
+        } else {
+          await this.destroyUser({
+            id: this.user.id,
+          });
+        }
 
         this.closeDialog();
         this.confirmingDestroy = false;

@@ -25,7 +25,7 @@
         </v-list>
       </v-toolbar>
 
-      <v-divider></v-divider>
+      <v-divider />
 
       <v-list dense class="pt-0">
         <v-list-tile
@@ -43,6 +43,33 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+
+      <template
+        v-if="$currentUser.isSuperadmin"
+      >
+        <v-divider />
+
+        <v-subheader>
+          Superadmin
+        </v-subheader>
+
+        <v-list dense class="pt-0">
+          <v-list-tile
+            v-for="(item, i) in superAdminNavItems"
+            :to="item.to"
+            :key="i"
+            @click=""
+          >
+            <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item.label }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </template>
     </v-navigation-drawer>
 
     <v-content>
@@ -92,20 +119,25 @@
         {
           label: 'Varastot',
           to: '/admin/varastot',
-          color: 'teal',
-          icon: 'group',
+          icon: 'web',
         },
         {
           label: 'Kaikki artikkelit',
           to: '/admin/artikkelit',
-          color: 'teal',
           icon: 'list',
         },
         {
           label: 'Käyttäjä',
           to: '/admin/kayttaja',
-          color: 'teal',
           icon: 'face',
+        },
+      ],
+
+      superAdminNavItems: [
+        {
+          label: 'Käyttäjät',
+          to: '/superadmin/kayttajat',
+          icon: 'group',
         },
       ],
     }),

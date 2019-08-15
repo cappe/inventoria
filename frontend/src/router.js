@@ -146,5 +146,25 @@ export default new Router({
         },
       ],
     },
+
+    {
+      path: '/superadmin',
+      name: 'superAdminLayout',
+      component: () => import(/* webpackChunkName: "adminLayout" */ './views/layouts/AdminLayout.vue'),
+      meta: meta({
+        requiresSuperAdmin: true,
+        documentTitle: 'Admin',
+      }),
+      children: [
+        {
+          path: 'kayttajat',
+          name: 'superAdminUsers',
+          component: () => import(/* webpackChunkName: "superAdminUsers" */ './views/superadmin/Users.vue'),
+          meta: meta({
+            documentTitle: 'Käyttäjät',
+          }),
+        },
+      ],
+    },
   ],
 });

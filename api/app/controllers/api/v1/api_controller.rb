@@ -23,7 +23,11 @@ class Api::V1::ApiController < ApplicationController
     end
 
     def require_admin
-      current_user.admin? || render_unauthorized
+      current_user.admin? || current_user.superadmin? || render_unauthorized
+    end
+
+    def require_superadmin
+      current_user.superadmin? || render_unauthorized
     end
 
     def current_user
