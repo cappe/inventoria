@@ -1,11 +1,12 @@
 <template>
-  <v-container>
-    <h1>
-      Reader
-    </h1>
-
+  <v-container
+    fill-height
+    class="pa-0"
+  >
     <v-layout
       justify-center
+      class="pa-4"
+      style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1;"
     >
       <v-btn-toggle
         v-model="action"
@@ -14,8 +15,7 @@
       >
         <v-btn
           flat
-          large
-          class="px-5"
+          class="px-4"
           :active-class="activeClasses"
         >
           Lisää varastoon
@@ -23,8 +23,7 @@
 
         <v-btn
           flat
-          large
-          class="px-5"
+          class="px-4"
           :active-class="activeClasses"
         >
           Käytä tuote
@@ -32,19 +31,29 @@
       </v-btn-toggle>
     </v-layout>
 
+    <v-layout
+      justify-center
+      align-center
+      style="
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      "
+    >
+      <div
+        style="width: 172px; height: 172px; border: 4px dashed white;"
+      >
+
+      </div>
+    </v-layout>
+
     <video
       id="video"
       width="100%"
       height="100%"
-      style="border: 1px solid gray"
     />
-
-    <v-btn
-      @click="simulateCameraAction"
-    >
-      Lue tuote
-    </v-btn>
-
   </v-container>
 </template>
 
@@ -127,12 +136,6 @@ export default {
       const result = await this.codeReader.decodeFromInputVideoDevice(deviceId, 'video');
 
       return result;
-    },
-
-    simulateCameraAction() {
-      const barcode = '0107392532132612111606161721061610189264';
-
-      this.process(barcode);
     },
 
     async process(barcode) {

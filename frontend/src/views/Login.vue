@@ -3,7 +3,7 @@
     <h1
       class="text-xs-center"
     >
-      Kirjaudu
+      Kirjaudu Inventoriaan
     </h1>
 
     <v-form
@@ -16,7 +16,7 @@
         <v-card-text>
           <v-text-field
             v-model="user.email"
-            label="Sähköpostiosoite"
+            label="Sähköposti"
             type="email"
           />
 
