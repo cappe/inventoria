@@ -13,11 +13,11 @@ const shortName = () => {
 };
 
 module.exports = {
-  // pwa: {
-  //   workboxOptions: {
-  //     importScripts: ['custom-sw.js', 'cache-strategies.js'],
-  //   },
-  // },
+  pwa: {
+    workboxOptions: {
+      importScripts: ['custom-sw.js', 'cache-strategies.js'],
+    },
+  },
 
   configureWebpack: {
     plugins: [

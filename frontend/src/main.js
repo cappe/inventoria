@@ -2,13 +2,15 @@ import Vue from 'vue';
 import './plugins/vuetify';
 import './plugins/dayjs';
 import VueWait from 'vue-wait';
-import App from './App';
+import App from './App.vue';
 import router from './router';
 import store from './vuex';
+import init from './initializers';
 
-import './registerServiceWorker';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+
+init({ store });
 
 Vue.use(VueWait);
 
