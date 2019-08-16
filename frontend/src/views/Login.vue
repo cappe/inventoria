@@ -73,9 +73,18 @@ export default {
 
       const {
         isAdmin,
+        isSuperadmin,
       } = this.$currentUser;
 
-      let to = isAdmin ? '/admin/varastot' : '/lukija';
+      let to = null;
+
+      if (isAdmin) {
+        to = '/admin/varastot';
+      } else if (isSuperadmin) {
+        to = '/superadmin/kayttajat';
+      } else {
+        to = '/lukija';
+      }
 
       if (redirect) {
         to = redirect;

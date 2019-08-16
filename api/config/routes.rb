@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       end
 
       namespace :superadmin do
-        resources :users, only: [:index, :create, :update, :destroy]
+        resources :users, only: [:index, :create]
       end
     end
   end

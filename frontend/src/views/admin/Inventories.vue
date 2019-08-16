@@ -21,7 +21,7 @@
       :headers="headers"
       :items="inventories"
       :pagination.sync="pagination"
-      no-data-text="Ei asiakkaita"
+      no-data-text="Ei varastoja"
       class="elevation-2"
       style="max-width: 700px;"
     >

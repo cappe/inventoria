@@ -29,6 +29,7 @@
             v => !!v || 'Sähköposti on pakollinen',
             v => v && v.length <= 255 || 'Sähköposti saa olla enintään 255 merkkiä',
           ]"
+          :hint="hint"
           label="Sähköposti"
           type="email"
           required
@@ -103,6 +104,18 @@
           'destroying user',
         ]);
       },
+
+      createAdmin() {
+        return this.dialogProps.createAdmin;
+      },
+
+      hint() {
+        if (this.isNew) {
+          return 'Uudelle käyttäjälle lähetetään sähköpostilla kirjautumistiedot automaattisesti';
+        }
+
+        return '';
+      },
     },
 
     created() {
@@ -126,8 +139,6 @@
 
       ...mapWaitingActions('superadmin/users', {
         superadminCreateUser: { action: 'createUser', loader: 'saving user' },
-        superadminUpdateUser: { action: 'updateUser', loader: 'saving user' },
-        superadminDestroyUser: { action: 'destroyUser', loader: 'destroying user' },
       }),
 
       cancel() {
@@ -145,17 +156,13 @@
         };
 
         if (this.isNew) {
-          if (this.$currentUser.isSuperadmin) {
+          if (this.createAdmin) {
             await this.superadminCreateUser(params);
           } else {
             await this.createUser(params);
           }
         } else {
-          if (this.$currentUser.isSuperadmin) { // eslint-disable-line
-            await this.superadminUpdateUser(params);
-          } else {
-            await this.updateUser(params);
-          }
+          await this.updateUser(params);
         }
 
         this.closeDialog();
@@ -167,15 +174,9 @@
           return;
         }
 
-        if (this.$currentUser.isSuperadmin) {
-          await this.superadminDestroyUser({
-            id: this.user.id,
-          });
-        } else {
-          await this.destroyUser({
-            id: this.user.id,
-          });
-        }
+        await this.destroyUser({
+          id: this.user.id,
+        });
 
         this.closeDialog();
         this.confirmingDestroy = false;

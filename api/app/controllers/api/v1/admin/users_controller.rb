@@ -3,16 +3,16 @@ class Api::V1::Admin::UsersController < Api::V1::ApiController
 
   def index
     render json: current_inventory.users,
-           root: 'data',
-           each_serializer: Api::V1::UserForAuditSerializer
+           root: 'data'
   end
 
   def create
     user = current_inventory.users.build(user_params)
 
     if user.save
-      render json: user,
-             serializer: Api::V1::UserForAuditSerializer
+      UserMailer.send_credentials_email(user).deliver_now
+
+      render json: user
     else
       raise Errors::BadRequest.new(user.errors.full_messages)
     end
@@ -20,8 +20,7 @@ class Api::V1::Admin::UsersController < Api::V1::ApiController
 
   def update
     if user.update_attributes(user_params)
-      render json: user,
-             serializer: Api::V1::UserForAuditSerializer
+      render json: user
     else
       raise Errors::BadRequest.new(user.errors.full_messages)
     end
@@ -29,8 +28,7 @@ class Api::V1::Admin::UsersController < Api::V1::ApiController
 
   def destroy
     if user.destroy
-      render json: user,
-             serializer: Api::V1::UserForAuditSerializer
+      render json: user
     else
       if user.errors.full_messages.length > 0
         raise Errors::BadRequest.new(user.errors.full_messages)
@@ -43,7 +41,11 @@ class Api::V1::Admin::UsersController < Api::V1::ApiController
   private
 
     def user
-      @user ||= current_inventory.users.find(params[:id])
+      if current_user.superadmin?
+        @user ||= User.find(params[:id])
+      else
+        @user ||= current_inventory.users.find(params[:id])
+      end
     end
 
     def user_params

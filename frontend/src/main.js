@@ -18,11 +18,13 @@ router.beforeEach(async (to, from, next) => {
   const authed = await store.dispatch('currentUser/auth');
   const {
     isAdmin,
+    isSuperadmin,
   } = await store.getters['currentUser/user'];
   const isLoginPage = to.path === '/kirjaudu' || to.path === '/';
 
   let requiresAuth = false;
   let requiresAdmin = false;
+  let requiresSuperadmin = false;
 
   to.matched.forEach((record) => {
     if (record.meta.requiresAuth) {
@@ -31,6 +33,10 @@ router.beforeEach(async (to, from, next) => {
 
     if (record.meta.requiresAdmin) {
       requiresAdmin = true;
+    }
+
+    if (record.meta.requiresSuperadmin) {
+      requiresSuperadmin = true;
     }
   });
 
@@ -45,12 +51,24 @@ router.beforeEach(async (to, from, next) => {
   const authedAndNotLoginPage = (authed && !isLoginPage);
   const noneAuthPage = (!authed && !requiresAuth);
   const authedAdminNotLoginPageIsAdmin = (authed && requiresAdmin && isAdmin && !isLoginPage);
+  const authedSuperadminNotLoginPageIsSuperadmin = (
+    authed
+    && requiresSuperadmin
+    && isSuperadmin
+    && !isLoginPage
+  );
 
-  if (authedAndNotLoginPage || noneAuthPage || authedAdminNotLoginPageIsAdmin) {
+  if (authedAndNotLoginPage
+      || noneAuthPage
+      || authedAdminNotLoginPageIsAdmin
+      || authedSuperadminNotLoginPageIsSuperadmin
+  ) {
     next();
   } else if (authed && isLoginPage) {
     if (isAdmin) {
       next({ path: '/admin/varastot' });
+    } else if (isSuperadmin) {
+      next({ path: '/superadmin/kayttajat' });
     } else {
       next({ path: '/lukija' });
     }

@@ -18,12 +18,6 @@
       </v-btn>
     </h1>
 
-    <v-subheader
-      class="pl-0"
-    >
-      Uudelle käyttäjälle lähetetään sähköpostilla kirjautumistiedot automaattisesti
-    </v-subheader>
-
     <v-data-table
       :loading="$wait.is('loading admin users')"
       :headers="headers"
@@ -91,12 +85,12 @@
 
     computed: {
       ...mapGetters({
-        users: 'superadmin/users/users',
+        users: 'admin/users/users',
       }),
     },
 
     mounted() {
-      this.loadUsers();
+      this.loadAdmins();
     },
 
     methods: {
@@ -105,7 +99,7 @@
       }),
 
       ...mapWaitingActions('superadmin/users', {
-        loadUsers: 'loading admin users',
+        loadAdmins: 'loading admin users',
       }),
 
       editUser(user = null) {
@@ -113,6 +107,7 @@
           dialogComponent: 'edit-user',
           dialogProps: {
             user,
+            createAdmin: true,
           },
         });
       },
