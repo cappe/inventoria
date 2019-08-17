@@ -29,6 +29,8 @@
 
         <v-card-actions>
           <v-btn
+            :loading="$wait.is('logging user in')"
+            :disabled="$wait.is('logging user in')"
             block
             color="success"
             type="submit"
@@ -42,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+  import { mapWaitingActions } from 'vue-wait';
 
 export default {
   data: () => ({
@@ -53,8 +55,8 @@ export default {
   }),
 
   methods: {
-    ...mapActions({
-      login: 'currentUser/login',
+    ...mapWaitingActions('currentUser', {
+      login: 'logging user in',
     }),
 
     async submit() {
