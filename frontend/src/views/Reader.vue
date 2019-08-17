@@ -43,7 +43,7 @@
       "
     >
       <div
-        style="width: 172px; height: 172px; border: 4px dashed white;"
+        style="width: 200px; height: 200px; border: 4px dashed white;"
       >
 
       </div>
