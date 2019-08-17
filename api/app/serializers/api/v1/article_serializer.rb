@@ -8,6 +8,7 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
   attribute :saldo, if: -> { should_include?(:saldo) }
   attribute :saldo_total, if: -> { should_include?(:saldo_total) }
   attribute :products, if: -> { should_include?(:products) }
+  attribute :is_commission_product, if: -> { should_include?(:is_commission_product) }
 
   def products
     options = {
@@ -28,6 +29,10 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
     return 0 unless object.inventory_articles.length > 0
 
     object.inventory_articles.first.count
+  end
+
+  def is_commission_product
+    saldo_total > 0
   end
 
   private

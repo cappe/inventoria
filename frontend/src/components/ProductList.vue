@@ -13,43 +13,59 @@
       <v-expansion-panel-content
         v-for="(article, i) in articlesWithProducts"
         :key="i"
+        :class="{
+          'deep-orange lighten-5': !article.isCommissionProduct,
+        }"
       >
         <template slot="header">
           <v-layout
-            align-center
+            align-space-between
           >
-            <div
-              class="text-xs-center"
-            >
-              <v-icon
-                :color="vIcon(article).color"
-              >
-                {{ vIcon(article).icon }}
-              </v-icon>
-
-              <span
-                v-if="article.saldo > article.saldoTotal"
-                class="caption d-block"
-              >
-                +{{ article.saldo - article.saldoTotal }}
-              </span>
-            </div>
-
-            <div
-              class="ml-4"
+            <v-layout
+              align-center
             >
               <div
-                class="subheading"
+                class="text-xs-center"
               >
-                {{ article.name }}
+                <v-icon
+                  :color="vIcon(article).color"
+                >
+                  {{ vIcon(article).icon }}
+                </v-icon>
+
+                <span
+                  v-if="article.saldo > article.saldoTotal"
+                  class="caption d-block"
+                >
+                  +{{ article.saldo - article.saldoTotal }}
+                </span>
               </div>
 
               <div
-                class="grey--text text--darken-1"
+                class="ml-4"
               >
-                Saldo {{ article.saldo }} / {{ article.saldoTotal }}
+                <div
+                  class="subheading"
+                >
+                  {{ article.name }}
+                </div>
+
+                <div
+                  class="grey--text text--darken-1"
+                >
+                  Saldo {{ article.saldo }} / {{ article.saldoTotal }}
+                </div>
               </div>
-            </div>
+            </v-layout>
+
+            <v-layout
+              v-if="!article.isCommissionProduct"
+              justify-end
+              align-center
+              class="pr-4"
+            >
+              Tuotetta ei ole merkitty komissiosopimukseen
+            </v-layout>
           </v-layout>
         </template>
         <v-card>

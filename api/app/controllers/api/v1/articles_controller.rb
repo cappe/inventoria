@@ -8,7 +8,13 @@ class Api::V1::ArticlesController < Api::V1::ApiController
 
   def with_products
     inventory_articles = current_inventory.inventory_articles
-    article_ids = inventory_articles.all.map(&:article_id)
+    products = current_inventory.products
+
+    article_ids = []
+
+    article_ids.concat(products.all.map(&:article_id))
+    article_ids.concat(inventory_articles.all.map(&:article_id))
+
     articles = Article
                  .where(id: article_ids)
                  .includes([
@@ -22,7 +28,8 @@ class Api::V1::ArticlesController < Api::V1::ApiController
            includes: [
              :products,
              :saldo,
-             :saldo_total
+             :saldo_total,
+             :is_commission_product
            ],
            each_serializer: Api::V1::ArticleSerializer
   end
