@@ -1,6 +1,6 @@
 class UserMailer < ApplicationMailer
   def send_credentials_email(user)
-    unless Rails.env.production
+    unless Rails.env.production?
       Rails.logger.debug "Does not send credentials email unless production...".red
 
       return
