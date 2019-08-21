@@ -26,6 +26,7 @@ class Api::V1::InventoriesController < Api::V1::ApiController
 
     result = Inventories::UseProductFromInventory.call(
       current_inventory: current_inventory,
+      current_user: current_user,
       params: params
     )
 

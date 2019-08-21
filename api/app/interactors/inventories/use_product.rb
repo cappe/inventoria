@@ -17,5 +17,9 @@ module Inventories
         context.fail!(error: I18n.t('inventory.using_product_failed'))
       end
     end
+
+    def rollback
+      context.product.unuse!
+    end
   end
 end

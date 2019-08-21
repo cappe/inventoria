@@ -7,6 +7,6 @@ module Inventories
       context.lot = context.params[:lot]
     end
 
-    organize UseProduct
+    organize UseProduct, PlaceProductOrder
   end
 end

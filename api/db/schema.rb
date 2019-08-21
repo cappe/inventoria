@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_15_215547) do
+ActiveRecord::Schema.define(version: 2019_08_21_104723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,9 @@ ActiveRecord::Schema.define(version: 2019_08_15_215547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "inventory_id"
+    t.bigint "article_id"
+    t.integer "status", default: 0, null: false
+    t.index ["article_id"], name: "index_orders_on_article_id"
     t.index ["inventory_id"], name: "index_orders_on_inventory_id"
     t.index ["product_id"], name: "index_orders_on_product_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -107,6 +110,7 @@ ActiveRecord::Schema.define(version: 2019_08_15_215547) do
 
   add_foreign_key "inventory_articles", "articles"
   add_foreign_key "inventory_articles", "inventories"
+  add_foreign_key "orders", "articles"
   add_foreign_key "orders", "inventories"
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "users"

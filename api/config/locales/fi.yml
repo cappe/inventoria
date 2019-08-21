@@ -4,6 +4,7 @@ fi:
     article_not_found: Artikkelia ei löytynyt
     add_to_inventory_failed: Tuotteen lisääminen varastoon epäonnistui
     using_product_failed: Tuotetta ei voitu merkata käytetyksi
+    placing_product_order_failed: Uuden tuotteen tilaus epäonnistui
 
   api:
     errors:
@@ -17,6 +18,7 @@ fi:
     product_audit:
       create: Tuote luettu varastoon
       used_from_inventory: Tuote käytetty
+      product_usage_rolled_back: Tuote palautettiin takaisin varastoon
       destroy: Tuote poistettu
       no_comment: Ei kommenttia
 
