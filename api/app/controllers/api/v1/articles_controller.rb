@@ -15,13 +15,15 @@ class Api::V1::ArticlesController < Api::V1::ApiController
     article_ids.concat(products.all.map(&:article_id))
     article_ids.concat(inventory_articles.all.map(&:article_id))
 
+    # We are not scoping products nor inventory_articles by inventory_id
+    # since we want to render also empty cases, suggesting that there
+    # should be some products under the article but the saldo is 0.
     articles = Article
                  .where(id: article_ids)
                  .includes([
                    :products,
                    :inventory_articles
                  ])
-                 .references(:products)
 
     render json: articles,
            root: 'data',
@@ -31,7 +33,8 @@ class Api::V1::ArticlesController < Api::V1::ApiController
              :saldo_total,
              :is_commission_product
            ],
-           each_serializer: Api::V1::ArticleSerializer
+           each_serializer: Api::V1::ArticleSerializer,
+           current_inventory: current_inventory
   end
 
   def show

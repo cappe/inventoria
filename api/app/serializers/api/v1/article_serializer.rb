@@ -25,10 +25,16 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
     products_not_used.length
   end
 
+  # Article have associated inventory_articles from
+  # different inventories so we need to scope them here.
   def saldo_total
-    return 0 unless object.inventory_articles.length > 0
+    ias = object
+            .inventory_articles
+            .select { |ia| ia.inventory_id == current_inventory.id }
 
-    object.inventory_articles.first.count
+    return 0 unless ias.length > 0
+
+    ias.first.count
   end
 
   def is_commission_product
@@ -37,7 +43,19 @@ class Api::V1::ArticleSerializer < ApplicationSerializer
 
   private
 
+  # Article have associated products from different
+  # inventories so we need to scope them here.
     def products_not_used
-      @products_not_used ||= object.products.select { |p| !p.used? }
+      @products_not_used ||= object
+                             .products
+                             .select { |p| p.inventory_id == current_inventory.id && !p.used? }
+    end
+
+    def current_inventory
+      unless instance_options[:current_inventory].is_a?(Inventory)
+        raise 'current_inventory is missing'
+      end
+
+      instance_options[:current_inventory]
     end
 end
