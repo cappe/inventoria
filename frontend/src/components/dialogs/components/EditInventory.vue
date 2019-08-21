@@ -32,6 +32,13 @@
           label="Nimi"
           required
         />
+
+        <v-select
+          v-model="inventory.deliverOrdersEvery"
+          :items="deliveryOptions"
+          label="Tilausten käsittely joka..."
+          class="mt-4"
+        />
       </v-card-text>
 
       <v-card-actions>
@@ -63,12 +70,14 @@
   import { mapGetters, mapActions } from 'vuex';
   import { mapWaitingActions } from 'vue-wait';
   import cloneDeep from 'lodash.clonedeep';
+  import { deliveryOptions } from '@/constants';
 
   export default {
     data: () => ({
       inventory: {},
       formValidation: false,
       confirmingDestroy: false,
+      deliveryOptions,
     }),
 
     computed: {
@@ -133,6 +142,7 @@
           payload: {
             inventory: {
               name: this.inventory.name,
+              deliverOrdersEvery: this.inventory.deliverOrdersEvery,
             },
           },
         };

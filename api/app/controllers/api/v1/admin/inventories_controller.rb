@@ -47,6 +47,6 @@ class Api::V1::Admin::InventoriesController < Api::V1::ApiController
     end
 
     def inventory_params
-      params.require(:inventory).permit(:name)
+      params.require(:inventory).permit(:name, :deliver_orders_every)
     end
 end

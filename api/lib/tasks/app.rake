@@ -19,4 +19,20 @@ namespace :app do
 
     exit 0
   end
+
+  namespace :orders do
+    desc 'Processes orders that need to be delivered immediately'
+    task process_deliver_now: :environment do
+      Orders::DeliverOrders.call({
+        with_status: Order.status_is_deliver_now
+      })
+    end
+
+    desc 'Processes pending orders'
+    task process_pending: :environment do
+      Orders::DeliverOrders.call({
+        with_status: Order.status_is_pending
+      })
+    end
+  end
 end

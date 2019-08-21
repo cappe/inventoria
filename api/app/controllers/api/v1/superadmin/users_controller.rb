@@ -24,6 +24,6 @@ class Api::V1::Superadmin::UsersController < Api::V1::ApiController
   private
 
     def user_params
-      params.require(:user).permit(:email)
+      params.require(:user).permit(:email, :receive_orders)
     end
 end

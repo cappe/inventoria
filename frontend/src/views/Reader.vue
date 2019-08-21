@@ -62,6 +62,7 @@ import {
   BrowserDatamatrixCodeReader,
 } from '@zxing/library';
 import { mapActions } from 'vuex';
+import { mapWaitingActions } from 'vue-wait';
 
 export default {
   data: () => ({
@@ -92,12 +93,17 @@ export default {
   },
 
   mounted() {
+    this.loadInventory();
     this.readBarcode();
   },
 
   methods: {
     ...mapActions({
       processBarcode: 'inventory/processBarcode',
+    }),
+
+    ...mapWaitingActions('inventory', {
+      loadInventory: 'loading inventory',
     }),
 
     async readBarcode() {

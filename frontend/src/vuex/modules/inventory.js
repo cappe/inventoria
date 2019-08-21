@@ -76,14 +76,14 @@ const actions = {
     }
   },
 
-  async useProduct({ dispatch }, { payload }) {
+  async useProduct({ dispatch }, { payload, deliveryOption }) {
     try {
       const {
         gtin,
         lot,
       } = payload.product;
 
-      const endpoint = `/inventories/${this.$currentInventoryId}/use_product?gtin=${gtin}&lot=${lot}&include=article`;
+      const endpoint = `/inventories/${this.$currentInventoryId}/use_product?gtin=${gtin}&lot=${lot}&include=article&delivery_option=${deliveryOption}`;
 
       const r = await api.update(endpoint);
 

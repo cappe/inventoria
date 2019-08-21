@@ -25,11 +25,16 @@ class User < ApplicationRecord
   validates :role,
             presence: true,
             inclusion: { in: USER_ROLES }
+  validates :receive_orders,
+            inclusion: { in: [true, false] }
 
   before_save { email.downcase! }
   before_validation :set_default_password, on: :create
 
   scope :admins, -> { where(role: :admin) }
+  scope :admins_who_receive_orders, -> {
+    merge(self.admins).where(receive_orders: true)
+  }
 
   def type
     self.user_type

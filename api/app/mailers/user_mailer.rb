@@ -17,4 +17,11 @@ class UserMailer < ApplicationMailer
     mail to: user.email,
          subject: 'Kirjautumislinkki Inventoriaan'
   end
+
+  def send_orders(recipients_emails, attachment)
+    attachments[attachment[:file_name]] = attachment[:file]
+
+    mail to: recipients_emails,
+         subject: 'Tilaukset — Inventoria'
+  end
 end

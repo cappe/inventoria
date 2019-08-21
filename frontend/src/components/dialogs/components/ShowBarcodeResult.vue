@@ -33,6 +33,17 @@
             </td>
           </tr>
         </table>
+
+        <v-checkbox
+          v-if="isUsingProduct"
+          v-model="deliveryOption"
+          label="Tee pikatilaus"
+          :hint="deliverNowHint"
+          true-value="deliverNow"
+          false-value="pending"
+          persistent-hint
+        />
+
       </v-card-text>
 
       <v-card-actions>
@@ -63,16 +74,19 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import { deliveryOptions } from '@/constants';
 
   export default {
     data: () => ({
       formValidation: false,
       processing: false,
+      deliveryOption: 'pending',
     }),
 
     computed: {
       ...mapGetters({
         dialogProps: 'dialog/dialogProps',
+        inventory: 'inventory/inventory',
       }),
 
       title() {
@@ -139,6 +153,15 @@
           },
         ];
       },
+
+      deliverNowHint() {
+        const {
+          text: day,
+        } = deliveryOptions.find(d => d.value === this.inventory.deliverOrdersEvery);
+
+        return `Tilaukset on asetettu käsiteltäväksi joka ${day.toLowerCase()}.
+                  Jos tarvitset tämän tuotteen nopeammin, valitse tämä vaihtoehto.`;
+      },
     },
 
     methods: {
@@ -164,6 +187,8 @@
         if (this.isPlacingProduct) {
           await this.placeProduct(params);
         } else if (this.isUsingProduct) {
+          params.deliveryOption = this.deliveryOption;
+
           await this.useProduct(params);
         }
 

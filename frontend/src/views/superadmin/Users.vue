@@ -32,6 +32,13 @@
       >
         <td>{{ props.item.id }}</td>
         <td>{{ props.item.email }}</td>
+        <td>
+          <v-icon
+            v-if="props.item.receiveOrders"
+          >
+            check
+          </v-icon>
+        </td>
         <td
           class="text-xs-right"
         >
@@ -76,6 +83,11 @@
           value: 'email',
         },
         {
+          text: 'Vastaanota tilauksia',
+          value: 'receiveOrders',
+          sortable: false,
+        },
+        {
           text: 'Toiminnot',
           sortable: false,
           align: 'right',
@@ -107,7 +119,7 @@
           dialogComponent: 'edit-user',
           dialogProps: {
             user,
-            createAdmin: true,
+            superAdmin: true,
           },
         });
       },

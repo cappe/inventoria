@@ -34,6 +34,12 @@
           type="email"
           required
         />
+
+        <v-checkbox
+          v-if="superAdmin"
+          v-model="user.receiveOrders"
+          label="Vastaanota tilauksia"
+        />
       </v-card-text>
 
       <v-card-actions>
@@ -105,8 +111,8 @@
         ]);
       },
 
-      createAdmin() {
-        return this.dialogProps.createAdmin;
+      superAdmin() {
+        return this.dialogProps.superAdmin;
       },
 
       hint() {
@@ -151,12 +157,13 @@
           payload: {
             user: {
               email: this.user.email,
+              receiveOrders: this.user.receiveOrders,
             },
           },
         };
 
         if (this.isNew) {
-          if (this.createAdmin) {
+          if (this.superAdmin) {
             await this.superadminCreateUser(params);
           } else {
             await this.createUser(params);

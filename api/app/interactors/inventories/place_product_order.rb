@@ -6,7 +6,8 @@ module Inventories
       params = {
         article_id: context.product.article_id,
         product_id: context.product.id,
-        user_id: context.current_user.id
+        user_id: context.current_user.id,
+        status: context.delivery_option
       }
 
       order = context.current_inventory.orders.build(params)

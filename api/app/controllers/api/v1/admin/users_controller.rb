@@ -49,6 +49,10 @@ class Api::V1::Admin::UsersController < Api::V1::ApiController
     end
 
     def user_params
+      if current_user.superadmin?
+        return params.require(:user).permit(:email, :receive_orders)
+      end
+
       params.require(:user).permit(:email)
     end
 end

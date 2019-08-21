@@ -1,4 +1,7 @@
 class ApplicationSerializer < ActiveModel::Serializer
+  delegate :superadmin?,      to: :current_user
+  delegate :admin?,           to: :current_user
+
   def json_key
     'data'
   end
