@@ -51,6 +51,7 @@
 
     <video
       id="video"
+      ref="video"
       width="100%"
       height="100%"
     />
@@ -95,6 +96,10 @@ export default {
   mounted() {
     this.loadInventory();
     this.readBarcode();
+  },
+
+  beforeDestroy() {
+    this.killCamera();
   },
 
   methods: {
@@ -152,6 +157,11 @@ export default {
       };
 
       await this.processBarcode(params);
+    },
+
+    killCamera() {
+      this.codeReader.stopStreams();
+      this.codeReader.unbindVideoSrc(this.$refs.video);
     },
   },
 };
