@@ -12,8 +12,6 @@
         class="mb-4"
       />
 
-      <!--<v-spacer />-->
-
       <v-layout
         justify-end
       >
@@ -47,11 +45,31 @@
       <template
         v-slot:items="props"
       >
-        <td>{{ props.item.id }}</td>
-        <td>{{ props.item.name }}</td>
-        <td>{{ props.item.gtin }}</td>
-        <td>{{ props.item.pid }}</td>
-        <td>{{ props.item.unit }}</td>
+        <td
+          v-if="renderHeader('id')"
+        >
+          {{ props.item.id }}
+        </td>
+        <td
+          v-if="renderHeader('name')"
+        >
+          {{ props.item.name }}
+        </td>
+        <td
+          v-if="renderHeader('gtin')"
+        >
+          {{ props.item.gtin }}
+        </td>
+        <td
+          v-if="renderHeader('pid')"
+        >
+          {{ props.item.pid }}
+        </td>
+        <td
+          v-if="renderHeader('unit')"
+        >
+          {{ props.item.unit }}
+        </td>
         <td
           v-if="showInventoryActions"
           class="text-xs-right"
@@ -95,6 +113,33 @@
             </v-icon>
           </v-btn>
         </td>
+
+        <td
+          v-if="showRowSelection"
+          class="text-xs-right"
+        >
+          <v-btn
+            v-if="selectedArticle === props.item"
+            flat
+            color="error"
+            class="ma-0"
+            @click="selectRow(props.item)"
+          >
+            <v-icon>
+              cancel
+            </v-icon>
+          </v-btn>
+
+          <v-btn
+            v-else
+            flat
+            color="info"
+            class="ma-0"
+            @click="selectRow(props.item)"
+          >
+            Valitse
+          </v-btn>
+        </td>
       </template>
 
       <template v-slot:no-results>
@@ -129,26 +174,15 @@
         type: Boolean,
         default: false,
       },
-    },
 
-    data: () => ({
-      search: '',
-      onlySelectedArticles: false,
-      pagination: {
-        sortBy: 'id',
-        descending: true,
-        rowsPerPage: 10,
+      showRowSelection: {
+        type: Boolean,
+        default: false,
       },
-    }),
 
-    computed: {
-      ...mapGetters({
-        articles: 'articles/articles',
-        inventoryArticleById: 'admin/inventoryArticles/inventoryArticleById',
-      }),
-
-      headers() {
-        const headers = [
+      tableHeaders: {
+        type: Array,
+        default: () => ([
           {
             text: 'ID',
             value: 'id',
@@ -169,7 +203,29 @@
             text: 'Tyyppi',
             value: 'unit',
           },
-        ];
+        ]),
+      },
+    },
+
+    data: () => ({
+      search: '',
+      onlySelectedArticles: false,
+      pagination: {
+        sortBy: 'id',
+        descending: true,
+        rowsPerPage: 10,
+      },
+      selectedArticle: null,
+    }),
+
+    computed: {
+      ...mapGetters({
+        articles: 'articles/articles',
+        inventoryArticleById: 'admin/inventoryArticles/inventoryArticleById',
+      }),
+
+      headers() {
+        const headers = this.tableHeaders;
 
         if (this.showInventoryActions) {
           headers.push({
@@ -193,7 +249,21 @@
           });
         }
 
+        if (this.showRowSelection) {
+          headers.push({
+            text: 'Rivivalinta',
+            align: 'right',
+            sortable: false,
+          });
+        }
+
         return headers;
+      },
+
+      renderHeader() {
+        return (header) => {
+          return this.headers.some(h => h.value === header);
+        };
       },
 
       __articles__() {
@@ -266,6 +336,15 @@
             article,
           },
         });
+      },
+
+      selectRow(article) {
+        if (this.selectedArticle === article) {
+          this.selectedArticle = null;
+          return;
+        }
+
+        this.selectedArticle = article;
       },
     },
   };
