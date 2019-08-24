@@ -341,10 +341,11 @@
       selectRow(article) {
         if (this.selectedArticle === article) {
           this.selectedArticle = null;
-          return;
+        } else {
+          this.selectedArticle = article;
         }
 
-        this.selectedArticle = article;
+        this.$emit('on-article-change', this.selectedArticle);
       },
     },
   };

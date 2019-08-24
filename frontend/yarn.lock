@@ -1231,6 +1231,11 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argv@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/argv/-/argv-0.0.2.tgz#ecbd16f8949b157183711b1bda334f37840185ab"
+  integrity sha1-7L0W+JSbFXGDcRsb2jNPN4QBhas=
+
 arr-diff@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-2.0.0.tgz#8f3b827f955a8bd669697e4a4256ac3ceae356cf"
@@ -1880,6 +1885,13 @@ buffer@^4.3.0:
 builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
+
+bwip-js@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/bwip-js/-/bwip-js-1.7.3.tgz#ba1c05d84937ae7ad61a08623230c126129a94a0"
+  integrity sha512-KyXcXueGiNioK0osHs/de0E5H/cx95sUhePDAFPQbpbAXchA05VBD22l1/Fq3AglPFsXUnFLiND9gQK46alFCQ==
+  dependencies:
+    argv "0.0.2"
 
 bytes@3.0.0:
   version "3.0.0"

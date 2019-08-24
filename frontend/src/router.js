@@ -164,6 +164,14 @@ export default new Router({
             documentTitle: 'Käyttäjät',
           }),
         },
+        {
+          path: 'datamatriisi-generaattori',
+          name: 'superAdminDatamatrixGenerator',
+          component: () => import(/* webpackChunkName: "superAdminDatamatrixGenerator" */ './views/superadmin/DatamatrixGenerator.vue'),
+          meta: meta({
+            documentTitle: 'Datamatriisi-generaattori',
+          }),
+        },
       ],
     },
   ],

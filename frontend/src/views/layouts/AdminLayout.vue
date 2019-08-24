@@ -139,6 +139,11 @@
           to: '/superadmin/kayttajat',
           icon: 'group',
         },
+        {
+          label: 'Datamatriisi',
+          to: '/superadmin/datamatriisi-generaattori',
+          icon: 'code',
+        },
       ],
     }),
   };
