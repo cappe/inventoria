@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it dentsply_frontend_1 yarn "$@"
