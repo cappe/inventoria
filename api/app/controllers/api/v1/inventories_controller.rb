@@ -45,7 +45,8 @@ class Api::V1::InventoriesController < Api::V1::ApiController
         :gtin,
         :lot,
         :manufacture_date,
-        :expiry_date
+        :expiry_date,
+        :datamatrix
       )
     end
 end

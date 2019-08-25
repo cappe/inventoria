@@ -4,9 +4,11 @@ class Gs1Product {
     gtin,
     manufactureDate,
     expiryDate,
+    datamatrix,
   }) {
     this.lot = lot;
     this.gtin = gtin;
+    this.datamatrix = datamatrix;
 
     this.manufactureDate = `20${manufactureDate}`;
     this.expiryDate = `20${expiryDate}`;
@@ -18,6 +20,7 @@ class Gs1Product {
       gtin: this.gtin,
       manufactureDate: this.manufactureDate,
       expiryDate: this.expiryDate,
+      datamatrix: this.datamatrix,
     };
   }
 }

@@ -5,6 +5,7 @@ fi:
     add_to_inventory_failed: Tuotteen lisääminen varastoon epäonnistui
     using_product_failed: Tuotetta ei voitu merkata käytetyksi
     placing_product_order_failed: Uuden tuotteen tilaus epäonnistui
+    product_is_already_read: Tuote näyttäisi olevan jo lisätty varastoon
 
   api:
     errors:
@@ -30,6 +31,7 @@ fi:
         lot: LOT
         manufacture_date: Valmistettu
         expiry_date: Viimeinen käyttöpäivä
+        datamatrix: Datamatriisi
       inventory:
         orders: Tilauksia
         products: Tuotteita

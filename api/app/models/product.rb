@@ -13,6 +13,10 @@ class Product < ApplicationRecord
             :expiry_date,
             presence: true
 
+  validates :datamatrix,
+            presence: true,
+            uniqueness: true
+
   scope :not_used, -> { where(used_at: nil) }
   scope :used, -> { where.not(used_at: nil) }
 
@@ -49,5 +53,9 @@ class Product < ApplicationRecord
 
   def write_audit_comment_on_destroy
     self.audit_comment = I18n.t('audits.product_audit.destroy')
+  end
+
+  def saving_failed_because_of(key, value)
+    self.errors.added?(key, value)
   end
 end

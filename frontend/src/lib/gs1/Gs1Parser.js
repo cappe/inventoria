@@ -45,7 +45,9 @@ class Gs1Parser {
       }
 
       return params;
-    }, {});
+    }, {
+      datamatrix: this.parser.code,
+    });
 
     const gs1Product = new Gs1Product(gs1ProductParams);
 
