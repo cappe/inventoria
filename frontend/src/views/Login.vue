@@ -15,6 +15,7 @@
       >
         <v-card-text>
           <v-text-field
+            ref="loginInput"
             v-model="user.email"
             label="Sähköposti"
             type="email"
@@ -53,6 +54,12 @@ export default {
       password: '',
     },
   }),
+
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.loginInput.focus();
+    });
+  },
 
   methods: {
     ...mapWaitingActions('currentUser', {
