@@ -4,57 +4,99 @@
     class="pa-0"
   >
     <v-layout
+      v-if="action === null"
+      column
       justify-center
-      class="pa-4"
-      style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1;"
+      align-center
     >
-      <v-btn-toggle
-        v-model="action"
-        mandatory
-        class="elevation-0 transparent mb-4"
+      <h1
+        class="mb-5"
       >
+        Valitse toiminto
+      </h1>
+
+      <div>
         <v-btn
-          flat
-          class="px-4"
-          :active-class="activeClasses"
+          large
+          color="teal"
+          class="white--text elevation-12 ml-0 mr-2"
+          style="height: 100px; max-width: 150px;"
+          @click="action = 0"
         >
-          Lisää varastoon
+          Lue varastoon
         </v-btn>
 
         <v-btn
-          flat
-          class="px-4"
-          :active-class="activeClasses"
+          large
+          color="info"
+          class="white--text elevation-12 mr-0 ml-2"
+          style="height: 100px; max-width: 150px;"
+          @click="action = 1"
         >
           Käytä tuote
         </v-btn>
-      </v-btn-toggle>
-    </v-layout>
-
-    <v-layout
-      justify-center
-      align-center
-      style="
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      "
-    >
-      <div
-        style="width: 200px; height: 200px; border: 4px dashed white;"
-      >
-
       </div>
     </v-layout>
 
-    <video
-      id="video"
-      ref="video"
-      width="100%"
-      height="100%"
-    />
+    <template
+      v-else
+    >
+      <v-layout
+        justify-center
+        :class="{
+          'pa-4': true,
+          'teal': isPlacingProduct,
+          'info': isUsingProduct,
+        }"
+        style="position: absolute; top: 0; left: 0; right: 0; height: auto; z-index: 1;"
+      >
+        <h1
+          class="text-xs-center white--text"
+        >
+          {{ actionTitle }}
+        </h1>
+
+        <v-spacer />
+
+        <v-btn
+          icon
+          outline
+          large
+          dark
+          @click="action = null"
+        >
+          <v-icon
+            dark
+          >
+            close
+          </v-icon>
+        </v-btn>
+      </v-layout>
+
+      <!-- dashed square -->
+      <v-layout
+        justify-center
+        align-center
+        style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+        "
+      >
+        <div
+          style="width: 200px; height: 200px; border: 4px dashed white;"
+        />
+      </v-layout>
+
+      <video
+        id="video"
+        ref="video"
+        width="100%"
+        height="100%"
+      />
+    </template>
   </v-container>
 </template>
 
@@ -68,7 +110,7 @@ import { mapWaitingActions } from 'vue-wait';
 export default {
   data: () => ({
     codeReader: new BrowserDatamatrixCodeReader(),
-    action: 0,
+    action: null,
   }),
 
   computed: {
@@ -80,22 +122,27 @@ export default {
       return this.action === 1;
     },
 
-    activeClasses() {
-      let classes = 'white--text elevation-12 v-btn--active ';
-
+    actionTitle() {
       if (this.isPlacingProduct) {
-        classes += 'teal';
-      } else if (this.isUsingProduct) {
-        classes += 'info';
+        return 'Lue varastoon';
       }
 
-      return classes;
+      return 'Käytä tuote';
+    },
+  },
+
+  watch: {
+    action(newVal) {
+      if (newVal === null) {
+        this.killCamera();
+      } else {
+        this.readBarcode();
+      }
     },
   },
 
   mounted() {
     this.loadInventory();
-    this.readBarcode();
   },
 
   beforeDestroy() {
