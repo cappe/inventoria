@@ -12,6 +12,8 @@ Rails.application.routes.draw do
         patch 'use_product', to: 'use_product', as: :use_product_from_inventory
 
         get 'articles_with_products', to: 'articles#with_products'
+
+        resources :products, only: [:show], param: :datamatrix
       end
 
       resources :articles, only: [:index, :create, :update, :destroy]

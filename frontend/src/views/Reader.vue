@@ -154,6 +154,7 @@ export default {
         barcode,
         isPlacingProduct: this.isPlacingProduct,
         isUsingProduct: this.isUsingProduct,
+        validateProduct: this.isUsingProduct,
       };
 
       await this.processBarcode(params);

@@ -28,13 +28,25 @@ const actions = {
     } catch (e) {}
   },
 
-  async processBarcode({ dispatch }, { barcode, ...rest }) {
+  async processBarcode({ dispatch }, { barcode, validateProduct = false, ...rest }) {
     try {
-      const product = Gs1Parser.createProductFromBarode(barcode).toString();
+      let product;
+      let article;
 
-      const article = await dispatch('loadArticle', {
-        gtin: product.gtin,
-      });
+      if (validateProduct) {
+        const { data } = await api.get(`inventories/${this.$currentInventoryId}/products/${barcode}?include=article`);
+
+        ({
+          article,
+          ...product
+        } = data);
+      } else {
+        product = Gs1Parser.createProductFromBarode(barcode).toString();
+
+        article = await dispatch('loadArticle', {
+          gtin: product.gtin,
+        });
+      }
 
       const dialogParams = {
         dialogComponent: 'show-barcode-result',
@@ -46,7 +58,14 @@ const actions = {
       };
 
       await dispatch('dialog/openDialog', dialogParams, { root: true });
-    } catch (e) {}
+    } catch (e) {
+      const errorParams = {
+        msg: e.message,
+        type: 'error',
+      };
+
+      await dispatch('snackbar/addNotification', errorParams, { root: true });
+    }
   },
 
   async loadArticlesWithProducts({ commit }) {
