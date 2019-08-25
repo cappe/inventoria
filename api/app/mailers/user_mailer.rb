@@ -14,6 +14,8 @@ class UserMailer < ApplicationMailer
       @role = 'asiakas'
     end
 
+    @link = Rails.application.credentials.dig(ENV['RAILS_CONTEXT'].to_sym, :access_control_allow_origin)
+
     mail to: user.email,
          subject: 'Kirjautumislinkki Inventoriaan'
   end
