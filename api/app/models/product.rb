@@ -19,6 +19,7 @@ class Product < ApplicationRecord
 
   scope :not_used, -> { where(used_at: nil) }
   scope :used, -> { where.not(used_at: nil) }
+  scope :order_by_first_to_expire, -> { order(expiry_date: :asc) }
 
   before_create :write_audit_comment_on_create
   before_destroy :write_audit_comment_on_destroy
@@ -55,7 +56,15 @@ class Product < ApplicationRecord
     self.audit_comment = I18n.t('audits.product_audit.destroy')
   end
 
-  def saving_failed_because_of(key, value)
-    self.errors.added?(key, value)
+
+  class << self
+    def first_to_expire(inventory_id, gtin)
+      Product
+        .where(inventory_id: inventory_id)
+        .where(gtin: gtin)
+        .not_used
+        .order_by_first_to_expire
+        .first
+    end
   end
 end

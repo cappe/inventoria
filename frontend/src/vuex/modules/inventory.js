@@ -30,19 +30,17 @@ const actions = {
 
   async processBarcode({ dispatch }, { barcode, validateProduct = false, ...rest }) {
     try {
-      let product;
+      let product = Gs1Parser.createProductFromBarode(barcode).toString();
       let article;
 
       if (validateProduct) {
-        const { data } = await api.get(`inventories/${this.$currentInventoryId}/products/${barcode}?include=article`);
+        const { data } = await api.get(`inventories/${this.$currentInventoryId}/allow_product_usage/${product.datamatrix}?include=article`);
 
         ({
           article,
           ...product
         } = data);
       } else {
-        product = Gs1Parser.createProductFromBarode(barcode).toString();
-
         article = await dispatch('loadArticle', {
           gtin: product.gtin,
         });

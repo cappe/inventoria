@@ -1,23 +1,19 @@
 class Api::V1::ProductsController < Api::V1::ApiController
   include IncludeParams
 
-  def show
+  def allow_product_usage
     includes = parse_include_params(:article)
 
-    if product
-      render json: product,
+    result = Inventories::AllowProductUsage.call(
+      current_inventory: current_inventory,
+      datamatrix: params[:datamatrix]
+    )
+
+    if result.success?
+      render json: result.product,
              includes: includes
     else
-      raise Errors::NotFound, I18n.t('inventory.product_is_missing')
+      render json: { message: result.error }, status: :bad_request
     end
   end
-
-  private
-
-    def product
-      @product ||= current_inventory
-                     .products
-                     .not_used
-                     .find_by(datamatrix: params[:datamatrix])
-    end
 end

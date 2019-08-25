@@ -2,6 +2,11 @@ module Inventories
   class PlaceProductToInventory
     include Interactor::Organizer
 
-    organize SetArticle, AddToInventory#, CreateEventLog
+    organize SetArticle,
+             BuildProduct,
+             FindExistingProduct,
+             CheckIfProductIsPlacedAlready,
+             CheckIfProductIsUsed,
+             SaveProduct
   end
 end
